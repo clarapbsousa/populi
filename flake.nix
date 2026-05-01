@@ -1,5 +1,5 @@
 {
-  description = "Rio Tinto Tennis court booking app";
+  description = "Populi Dev Shell";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -20,11 +20,14 @@
             nodejs_24
             openssl
             prisma-engines
+            prisma
           ];
-
           shellHook = ''
-            echo "Rio Tinto dev shell"
-            echo "Node $(node --version) | npm $(npm --version)"
+                export PKG_CONFIG_PATH="${pkgs.openssl.dev}/lib/pkgconfig";
+            export PRISMA_SCHEMA_ENGINE_BINARY="${pkgs.prisma-engines}/bin/schema-engine"
+            export PRISMA_QUERY_ENGINE_BINARY="${pkgs.prisma-engines}/bin/query-engine"
+            export PRISMA_QUERY_ENGINE_LIBRARY="${pkgs.prisma-engines}/lib/libquery_engine.node"
+            export PRISMA_FMT_BINARY="${pkgs.prisma-engines}/bin/prisma-fmt"
           '';
         };
       });
