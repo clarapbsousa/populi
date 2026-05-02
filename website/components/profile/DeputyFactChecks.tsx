@@ -104,7 +104,7 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
           ))}
         </div>
       ) : factChecks.length === 0 ? (
-        <p className="font-body text-on-primary-container/70">
+        <p className="font-body text-on-surface-variant">
           Nenhuma verificação do Polígrafo encontrada para este deputado.
         </p>
       ) : (

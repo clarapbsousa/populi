@@ -92,7 +92,7 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
           ))}
         </div>
       ) : articles.length === 0 ? (
-        <p className="font-body text-on-primary-container/70">
+        <p className="font-body text-on-surface-variant">
           Nenhuma notícia encontrada para este deputado.
         </p>
       ) : (
