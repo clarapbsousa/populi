@@ -35,14 +35,14 @@ export default function SearchBar({
             >
               filter_alt
             </span>
-            FILTRAR
+            Filtrar
           </button>
           <button
             type="button"
             onClick={onSearch}
             className="border-2 border-stone-900 bg-primary-container text-on-primary px-6 py-2 font-label text-xs font-medium uppercase tracking-wider glossy-finish hover:bg-primary transition-colors"
           >
-            PESQUISAR
+            Pesquisar
           </button>
         </div>
       </div>

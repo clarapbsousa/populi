@@ -9,18 +9,18 @@ interface PartyFilter {
 }
 
 const filterCategories: FilterCategory[] = [
-  { label: "PARTIDOS", icon: "token" },
-  { label: "REGIÃO", icon: "map" },
-  { label: "TEMA", icon: "topic" },
-  { label: "PERÍODO", icon: "calendar_month" },
+  { label: "Partidos", icon: "token" },
+  { label: "Região", icon: "map" },
+  { label: "Tema", icon: "topic" },
+  { label: "Período", icon: "calendar_month" },
 ];
 
 const partyFilters: PartyFilter[] = [
-  { label: "PARTIDO A", color: "bg-stone-400" },
-  { label: "PARTIDO B", color: "bg-stone-900" },
-  { label: "PARTIDO C", color: "bg-stone-200" },
-  { label: "PARTIDO D", color: "border border-stone-900 bg-transparent" },
-  { label: "PARTIDO E", color: "bg-primary" },
+  { label: "Partido A", color: "bg-stone-400" },
+  { label: "Partido B", color: "bg-stone-900" },
+  { label: "Partido C", color: "bg-stone-200" },
+  { label: "Partido D", color: "border border-stone-900 bg-transparent" },
+  { label: "Partido E", color: "bg-primary" },
 ];
 
 export default function ExploreSection() {

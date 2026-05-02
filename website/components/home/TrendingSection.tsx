@@ -57,7 +57,7 @@ export default function TrendingSection() {
         </h2>
         <div className="h-[2px] flex-grow bg-stone-900 opacity-20" />
         <span className="font-label text-on-surface-variant text-xs font-medium uppercase tracking-wider">
-          AS PEÇAS MAIS DEBATIDAS
+          As Peças Mais Debatidas
         </span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
