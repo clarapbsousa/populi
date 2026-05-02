@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import FilterChip from "../ui/FilterChip";
 import Pagination from "../ui/Pagination";
 import SearchBar from "../ui/SearchBar";
+import Toggle from "../ui/Toggle";
 import RepresentativeCard from "./RepresentativeCard";
 
 interface Deputy {
@@ -15,6 +16,7 @@ interface Deputy {
   partyColor: string | null;
   image: string;
   description: string;
+  isSuplente: boolean;
 }
 
 interface PaginationData {
@@ -57,12 +59,20 @@ export default function AssemblySection() {
   });
   const [search, setSearch] = useState("");
   const [constituency, setConstituency] = useState("");
+  const [showSuplentes, setShowSuplentes] = useState(false);
+  const [sortByPhoto, setSortByPhoto] = useState(true);
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchDeputies = useCallback(
-    async (page: number, searchTerm: string, constituencyFilter: string) => {
+    async (
+      page: number,
+      searchTerm: string,
+      constituencyFilter: string,
+      showSuplentesFilter: boolean,
+      sortByPhotoFilter: boolean,
+    ) => {
       setLoading(true);
       setError(null);
 
@@ -72,6 +82,8 @@ export default function AssemblySection() {
         params.set("limit", "12");
         if (searchTerm) params.set("search", searchTerm);
         if (constituencyFilter) params.set("constituency", constituencyFilter);
+        if (showSuplentesFilter) params.set("showSuplentes", "true");
+        if (!sortByPhotoFilter) params.set("sortByPhoto", "false");
 
         const response = await fetch(`/api/deputy?${params.toString()}`);
 
@@ -94,15 +106,15 @@ export default function AssemblySection() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      fetchDeputies(1, search, constituency);
+      fetchDeputies(1, search, constituency, showSuplentes, sortByPhoto);
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [search, constituency, fetchDeputies]);
+  }, [search, constituency, showSuplentes, sortByPhoto, fetchDeputies]);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > pagination.totalPages) return;
-    fetchDeputies(page, search, constituency);
+    fetchDeputies(page, search, constituency, showSuplentes, sortByPhoto);
   };
 
   const toggleConstituency = (c: string) => {
@@ -120,7 +132,9 @@ export default function AssemblySection() {
           placeholder="Pesquisar representantes por nome ou distrito..."
           value={search}
           onChange={setSearch}
-          onSearch={() => fetchDeputies(1, search, constituency)}
+          onSearch={() =>
+            fetchDeputies(1, search, constituency, showSuplentes, sortByPhoto)
+          }
           onFilterToggle={() => setFiltersVisible((v) => !v)}
           filtersVisible={filtersVisible}
         />
@@ -131,7 +145,7 @@ export default function AssemblySection() {
               : "max-h-0 opacity-0 mt-0"
           }`}
         >
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mb-4">
             {constituencies.map((c) => (
               <FilterChip
                 key={c}
@@ -140,6 +154,18 @@ export default function AssemblySection() {
                 onClick={() => toggleConstituency(c)}
               />
             ))}
+          </div>
+          <div className="pt-4 border-t-2 border-stone-900/20 flex flex-wrap gap-x-6 gap-y-3">
+            <Toggle
+              label="Com foto primeiro"
+              checked={sortByPhoto}
+              onChange={(checked) => setSortByPhoto(checked)}
+            />
+            <Toggle
+              label="Mostrar Suplentes"
+              checked={showSuplentes}
+              onChange={(checked) => setShowSuplentes(checked)}
+            />
           </div>
         </div>
       </div>
@@ -184,7 +210,15 @@ export default function AssemblySection() {
           <p className="font-body text-error mb-4">{error}</p>
           <button
             type="button"
-            onClick={() => fetchDeputies(pagination.page, search, constituency)}
+            onClick={() =>
+              fetchDeputies(
+                pagination.page,
+                search,
+                constituency,
+                showSuplentes,
+                sortByPhoto,
+              )
+            }
             className="border-2 border-stone-900 bg-primary text-white px-6 py-2 font-label text-xs font-medium uppercase tracking-wider glossy-finish hover:bg-primary-container transition-colors"
           >
             Tentar Novamente
@@ -206,6 +240,7 @@ export default function AssemblySection() {
                 partyColor={deputy.partyColor}
                 image={deputy.image}
                 description={deputy.description}
+                isSuplente={deputy.isSuplente}
               />
             ))}
           </div>

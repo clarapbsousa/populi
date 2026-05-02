@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getPrismaClient } from "@/lib/prisma";
+import { Prisma } from "@/app/generated/prisma/client";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,8 @@ export async function GET(request: NextRequest) {
 
   const search = searchParams.get("search") || "";
   const constituency = searchParams.get("constituency") || "";
+  const showSuplentes = searchParams.get("showSuplentes") === "true";
+  const sortByPhoto = searchParams.get("sortByPhoto") !== "false";
   const page = Math.max(
     1,
     Number.parseInt(searchParams.get("page") || "1", 10),
@@ -18,10 +21,7 @@ export async function GET(request: NextRequest) {
     Math.min(50, Number.parseInt(searchParams.get("limit") || "12", 10)),
   );
 
-  const where: {
-    depNomeParlamentar?: { contains: string; mode: "insensitive" };
-    depCPDes?: string;
-  } = {};
+  const where: Prisma.DeputyWhereInput = {};
 
   if (search) {
     where.depNomeParlamentar = { contains: search, mode: "insensitive" };
@@ -31,10 +31,45 @@ export async function GET(request: NextRequest) {
     where.depCPDes = constituency;
   }
 
-  const skip = (page - 1) * limit;
+  if (!showSuplentes) {
+    where.statusHistory = {
+      none: {
+        sioDes: { contains: "suplent", mode: "insensitive" },
+        sioDtFim: null,
+      },
+    };
+  }
 
-  const [deputies, total] = await Promise.all([
-    prisma.deputy.findMany({
+  const skip = (page - 1) * limit;
+  let deputies: Awaited<
+    ReturnType<
+      typeof prisma.deputy.findMany<{
+        include: {
+          partyHistory: {
+            include: { party: true };
+            orderBy: { gpDtInicio: "desc" };
+            take: 1;
+          };
+          cms: {
+            where: { cmsSituacao: { not: "Suspenso" } };
+            orderBy: { cmsCargo: "asc" };
+            take: 1;
+          };
+          statusHistory: {
+            where: {
+              sioDes: { contains: "suplent"; mode: "insensitive" };
+              sioDtFim: null;
+            };
+            take: 1;
+          };
+        };
+      }>
+    >
+  >;
+  let total: number;
+
+  if (sortByPhoto) {
+    const allDeputies = await prisma.deputy.findMany({
       where,
       include: {
         partyHistory: {
@@ -47,19 +82,65 @@ export async function GET(request: NextRequest) {
           orderBy: { cmsCargo: "asc" },
           take: 1,
         },
+        statusHistory: {
+          where: {
+            sioDes: { contains: "suplent", mode: "insensitive" },
+            sioDtFim: null,
+          },
+          take: 1,
+        },
       },
-      skip,
-      take: limit,
       orderBy: { depNomeParlamentar: "asc" },
-    }),
-    prisma.deputy.count({ where }),
-  ]);
+    });
+
+    allDeputies.sort((a, b) => {
+      const aHasPhoto = !!a.depImageUrl;
+      const bHasPhoto = !!b.depImageUrl;
+      if (aHasPhoto !== bHasPhoto) return bHasPhoto ? 1 : -1;
+      return a.depNomeParlamentar.localeCompare(b.depNomeParlamentar);
+    });
+
+    total = allDeputies.length;
+    deputies = allDeputies.slice(skip, skip + limit);
+  } else {
+    const [dbDeputies, dbTotal] = await Promise.all([
+      prisma.deputy.findMany({
+        where,
+        include: {
+          partyHistory: {
+            include: { party: true },
+            orderBy: { gpDtInicio: "desc" },
+            take: 1,
+          },
+          cms: {
+            where: { cmsSituacao: { not: "Suspenso" } },
+            orderBy: { cmsCargo: "asc" },
+            take: 1,
+          },
+          statusHistory: {
+            where: {
+              sioDes: { contains: "suplent", mode: "insensitive" },
+              sioDtFim: null,
+            },
+            take: 1,
+          },
+        },
+        skip,
+        take: limit,
+        orderBy: { depNomeParlamentar: "asc" },
+      }),
+      prisma.deputy.count({ where }),
+    ]);
+    deputies = dbDeputies;
+    total = dbTotal;
+  }
 
   const mappedDeputies = deputies.map((deputy) => {
     const activePartyHistory = deputy.partyHistory[0];
     const partySigla = activePartyHistory?.party?.sigla || null;
     const partyColor = activePartyHistory?.party?.color || null;
     const committee = deputy.cms[0];
+    const isSuplente = deputy.statusHistory.length > 0;
 
     let description: string;
     if (committee?.cmsNo) {
@@ -77,6 +158,7 @@ export async function GET(request: NextRequest) {
       partyColor,
       image: deputy.depImageUrl || "/defaultNoImage.png",
       description,
+      isSuplente,
     };
   });
 
