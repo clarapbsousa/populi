@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import FilterChip from "../ui/FilterChip";
+import Pagination from "../ui/Pagination";
 import SearchBar from "../ui/SearchBar";
 import RepresentativeCard from "./RepresentativeCard";
 
@@ -15,7 +16,7 @@ interface Deputy {
   legislature: string;
 }
 
-interface Pagination {
+interface PaginationData {
   page: number;
   limit: number;
   total: number;
@@ -60,7 +61,7 @@ function getMockImage(index: number): string {
 
 export default function AssemblySection() {
   const [deputies, setDeputies] = useState<Deputy[]>([]);
-  const [pagination, setPagination] = useState<Pagination>({
+  const [pagination, setPagination] = useState<PaginationData>({
     page: 1,
     limit: 12,
     total: 0,
@@ -227,46 +228,11 @@ export default function AssemblySection() {
             </div>
           )}
 
-          {/* Pagination */}
-          {pagination.totalPages > 1 && (
-            <div className="mt-12 flex justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => handlePageChange(pagination.page - 1)}
-                disabled={pagination.page <= 1}
-                className="border-2 border-stone-900 bg-surface w-10 h-10 flex items-center justify-center glossy-finish text-primary-container hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <span className="material-symbols-outlined">chevron_left</span>
-              </button>
-
-              {Array.from(
-                { length: pagination.totalPages },
-                (_, i) => i + 1,
-              ).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  type="button"
-                  onClick={() => handlePageChange(pageNum)}
-                  className={`border-2 border-stone-900 w-10 h-10 flex items-center justify-center glossy-finish font-label text-xs font-medium uppercase ${
-                    pageNum === pagination.page
-                      ? "bg-primary-container text-on-primary"
-                      : "bg-surface text-on-surface hover:bg-surface-container-high"
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              ))}
-
-              <button
-                type="button"
-                onClick={() => handlePageChange(pagination.page + 1)}
-                disabled={pagination.page >= pagination.totalPages}
-                className="border-2 border-stone-900 bg-surface w-10 h-10 flex items-center justify-center glossy-finish text-primary-container hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <span className="material-symbols-outlined">chevron_right</span>
-              </button>
-            </div>
-          )}
+          <Pagination
+            currentPage={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={handlePageChange}
+          />
         </>
       )}
     </section>
