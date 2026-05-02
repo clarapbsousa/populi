@@ -27,6 +27,16 @@ function getToolCallNames(message: UIMessage): string[] {
     .map((part) => part.type.replace("tool-", ""));
 }
 
+const toolLabelMap: Record<string, string> = {
+  search_deputies: "A pesquisar deputados",
+  count_deputies: "A contar deputados",
+  get_deputy_profile: "A obter detalhes de deputado",
+};
+
+function getToolLabel(name: string): string {
+  return toolLabelMap[name] || name;
+}
+
 export default function ChatMessage({ message, isLoading, isLast }: ChatMessageProps) {
   const isUser = message.role === "user";
   const text = getMessageText(message);
@@ -51,7 +61,7 @@ export default function ChatMessage({ message, isLoading, isLast }: ChatMessageP
                 className="inline-flex items-center gap-1 bg-primary-container text-on-primary px-2 py-0.5 font-label text-[10px] uppercase tracking-wider animate-pulse"
               >
                 <span className="w-1.5 h-1.5 bg-on-primary rounded-full" />
-                A chamar: {name}
+                {getToolLabel(name)}
               </span>
             ))}
           </div>
