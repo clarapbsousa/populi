@@ -27,4 +27,18 @@ jobs:
           push: true
           tags: |
             registry.henriquesf.me/populi:${{ github.sha }}
-            registry.henriquesf.me/populi-api:latest
+            registry.henriquesf.me/populi:latest
+      - name: Update NixOS Config
+        run: |
+          git config --global user.email "nix-bot@henriquesf.me"
+          git config --global user.name "NixOS Deployment Bot"
+
+          git clone https://x-access-token:${{ secrets.NIX_TOKEN }}@github.com/HenriqueSFernandes/dotfiles-server.git
+          cd dotfiles-server
+
+          sed -i 's|image = "registry.henriquesf.me/populi:.*";|image = "registry.henriquesf.me/populi:${{ github.sha }}";|' services/populi.nix
+
+          git add .
+          git commit -m "deploy: update populi to ${{ github.sha }}"
+          git push
+
