@@ -4,6 +4,8 @@ import TrendingSection from "@/components/home/TrendingSection";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
