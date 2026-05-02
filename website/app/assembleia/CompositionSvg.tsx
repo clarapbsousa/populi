@@ -1918,7 +1918,7 @@ export default function CompositionSvg() {
       </svg>
       {tooltip.visible && (
         <div
-          className="absolute pointer-events-none z-50 bg-surface-container border-2 border-stone-900 text-on-surface font-label text-xs px-2 py-1 solid-shadow whitespace-nowrap"
+          className="absolute pointer-events-none z-50 bg-surface-container border-2 border-stone-900 text-on-surface font-label text-xs px-2 py-1 whitespace-nowrap"
           style={{
             left: tooltip.x,
             top: tooltip.y,
