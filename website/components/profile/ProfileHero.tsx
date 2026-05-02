@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 const partyColors: Record<string, string> = {
   PS: "#dc2626",
@@ -97,17 +96,6 @@ export default function ProfileHero({
           )}
         </div>
 
-        <div className="flex gap-4">
-          <div className="relative">
-            <div className="absolute inset-0 bg-primary translate-x-1.5 translate-y-1.5" />
-            <Link
-              href="/assembly"
-              className="relative z-10 bg-primary-container text-on-primary font-headline font-bold uppercase px-6 py-3 border-2 border-[#2F2F2F] shadow-md hover:bg-primary transition-all active:scale-95 inline-flex items-center gap-2"
-            >
-              Entrar na Assembleia
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   );
