@@ -8,6 +8,7 @@ import { Trash2 } from "lucide-react";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 import ClearChatDialog from "./ClearChatDialog";
+import { DEFAULT_QUESTIONS } from "./chat-constants";
 
 const STORAGE_KEY = "populi-chat-messages";
 const MAX_MESSAGES = 50;
@@ -65,7 +66,6 @@ export default function ChatContainer() {
   useEffect(() => {
     if (!initialMessagesLoaded) {
       const saved = loadMessages();
-      console.log("[Chat] Loaded", saved.length, "messages from localStorage");
       if (saved.length > 0) {
         setMessages(saved);
       }
@@ -76,7 +76,6 @@ export default function ChatContainer() {
   // Save messages to localStorage whenever they change
   useEffect(() => {
     if (initialMessagesLoaded && messages.length > 0) {
-      console.log("[Chat] Saving", messages.length, "messages to localStorage");
       saveMessages(messages);
     }
   }, [messages, initialMessagesLoaded]);
@@ -86,24 +85,11 @@ export default function ChatContainer() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Debug status changes
-  useEffect(() => {
-    console.log("[Chat] Status changed:", status);
-  }, [status]);
-
-  // Debug errors
-  useEffect(() => {
-    if (error) {
-      console.error("[Chat] Error:", error);
-    }
-  }, [error]);
-
   const handleSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!input.trim() || isLoading) return;
 
-      console.log("[Chat] Sending message:", input);
       sendMessage({ text: input });
       setInput("");
     },
@@ -111,7 +97,6 @@ export default function ChatContainer() {
   );
 
   const handleClear = useCallback(() => {
-    console.log("[Chat] Clearing chat");
     setMessages([]);
     if (typeof window !== "undefined") {
       localStorage.removeItem(STORAGE_KEY);
@@ -159,16 +144,11 @@ export default function ChatContainer() {
               Pergunte-me sobre qualquer deputado ou atividade parlamentar.
             </p>
             <div className="mt-4 flex flex-wrap gap-2 justify-center">
-              {[
-                "Quantos deputados existem em Lisboa?",
-              ].map((example) => (
+              {DEFAULT_QUESTIONS.map((example) => (
                 <button
                   key={example}
                   type="button"
-                  onClick={() => {
-                    console.log("[Chat] Example clicked:", example);
-                    setInput(example);
-                  }}
+                  onClick={() => setInput(example)}
                   className="border-2 border-stone-900 bg-surface px-3 py-1.5 font-label text-[10px] uppercase tracking-wider hover:bg-primary-container hover:text-on-primary transition-colors"
                 >
                   {example}

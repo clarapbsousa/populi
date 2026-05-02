@@ -37,7 +37,6 @@ export const deputyTools = {
         .describe("Constituency name (e.g. Lisboa, Porto, Braga)"),
     }),
     execute: async ({ name, party, constituency }) => {
-      console.log("[Tool: search_deputies] Called with:", { name, party, constituency });
       const prisma = getPrismaClient();
 
       let partyDeputyIds: number[] | null = null;
@@ -97,7 +96,6 @@ export const deputyTools = {
         legislature: d.legDes,
         image: d.depImageUrl,
       }));
-      console.log("[Tool: search_deputies] Found", results.length, "results");
       return results;
     },
   }),
@@ -120,7 +118,6 @@ export const deputyTools = {
         .describe("Constituency name (e.g. Lisboa, Porto, Braga)"),
     }),
     execute: async ({ name, party, constituency }) => {
-      console.log("[Tool: count_deputies] Called with:", { name, party, constituency });
       const prisma = getPrismaClient();
 
       let partyDeputyIds: number[] | null = null;
@@ -157,7 +154,6 @@ export const deputyTools = {
         },
       });
 
-      console.log("[Tool: count_deputies] Result:", count);
       return { count };
     },
   }),
@@ -179,7 +175,6 @@ export const deputyTools = {
         .describe("Maximum number of recent interventions to include"),
     }),
     execute: async ({ id, initiativesLimit, interventionsLimit }) => {
-      console.log("[Tool: get_deputy_profile] Called with id:", id);
       const prisma = getPrismaClient();
 
       const deputy = await prisma.deputy.findUnique({
@@ -221,12 +216,10 @@ export const deputyTools = {
       });
 
       if (!deputy) {
-        console.log("[Tool: get_deputy_profile] Deputy not found:", id);
         return { error: "Deputado não encontrado" };
       }
 
       const partySigla = deputy.partyHistory[0]?.party?.sigla || null;
-      console.log("[Tool: get_deputy_profile] Found:", deputy.depNomeParlamentar);
 
       return {
         id: deputy.id,
