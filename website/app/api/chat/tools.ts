@@ -40,6 +40,23 @@ export const deputyTools = {
       console.log("[Tool: search_deputies] Called with:", { name, party, constituency });
       const prisma = getPrismaClient();
 
+      let partyDeputyIds: number[] | null = null;
+      if (party) {
+        const rows = await prisma.$queryRaw<{ deputy_id: number }[]>`
+          SELECT latest.deputy_id
+          FROM (
+            SELECT DISTINCT ON (ph.deputy_id)
+              ph.deputy_id,
+              p.sigla
+            FROM party_history ph
+            JOIN parties p ON p.id = ph.party_id
+            ORDER BY ph.deputy_id, ph.gp_dt_inicio DESC NULLS LAST, ph.id DESC
+          ) latest
+          WHERE latest.sigla = ${party}
+        `;
+        partyDeputyIds = rows.map((row) => row.deputy_id);
+      }
+
       const deputies = await prisma.deputy.findMany({
         where: {
           AND: [
@@ -52,11 +69,12 @@ export const deputyTools = {
                 }
               : {},
             constituency ? { depCPDes: constituency } : {},
+            partyDeputyIds ? { id: { in: partyDeputyIds } } : {},
           ],
         },
         include: {
           partyHistory: {
-            where: { gpDtFim: null },
+            orderBy: { gpDtInicio: "desc" },
             include: {
               party: {
                 select: { sigla: true },
@@ -69,22 +87,16 @@ export const deputyTools = {
         orderBy: { depNomeParlamentar: "asc" },
       });
 
-      const results = deputies
-        .filter((d) => {
-          if (!party) return true;
-          const activeParty = d.partyHistory[0]?.party?.sigla;
-          return activeParty === party;
-        })
-        .map((d) => ({
-          id: d.id,
-          name: d.depNomeParlamentar,
-          fullName: d.depNomeCompleto,
-          party: d.partyHistory[0]?.party?.sigla || null,
-          partyColor: getPartyColor(d.partyHistory[0]?.party?.sigla || null),
-          constituency: d.depCPDes,
-          legislature: d.legDes,
-          image: d.depImageUrl,
-        }));
+      const results = deputies.map((d) => ({
+        id: d.id,
+        name: d.depNomeParlamentar,
+        fullName: d.depNomeCompleto,
+        party: d.partyHistory[0]?.party?.sigla || null,
+        partyColor: getPartyColor(d.partyHistory[0]?.party?.sigla || null),
+        constituency: d.depCPDes,
+        legislature: d.legDes,
+        image: d.depImageUrl,
+      }));
       console.log("[Tool: search_deputies] Found", results.length, "results");
       return results;
     },
@@ -111,6 +123,23 @@ export const deputyTools = {
       console.log("[Tool: count_deputies] Called with:", { name, party, constituency });
       const prisma = getPrismaClient();
 
+      let partyDeputyIds: number[] | null = null;
+      if (party) {
+        const rows = await prisma.$queryRaw<{ deputy_id: number }[]>`
+          SELECT latest.deputy_id
+          FROM (
+            SELECT DISTINCT ON (ph.deputy_id)
+              ph.deputy_id,
+              p.sigla
+            FROM party_history ph
+            JOIN parties p ON p.id = ph.party_id
+            ORDER BY ph.deputy_id, ph.gp_dt_inicio DESC NULLS LAST, ph.id DESC
+          ) latest
+          WHERE latest.sigla = ${party}
+        `;
+        partyDeputyIds = rows.map((row) => row.deputy_id);
+      }
+
       const count = await prisma.deputy.count({
         where: {
           AND: [
@@ -123,6 +152,7 @@ export const deputyTools = {
                 }
               : {},
             constituency ? { depCPDes: constituency } : {},
+            partyDeputyIds ? { id: { in: partyDeputyIds } } : {},
           ],
         },
       });
@@ -156,7 +186,7 @@ export const deputyTools = {
         where: { id },
         include: {
           partyHistory: {
-            where: { gpDtFim: null },
+            orderBy: { gpDtInicio: "desc" },
             include: {
               party: {
                 select: { sigla: true },
