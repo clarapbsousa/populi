@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
+import type { Prisma } from "@/app/generated/prisma/client";
 import { getPrismaClient } from "@/lib/prisma";
-import { Prisma } from "@/app/generated/prisma/client";
 
 export const dynamic = "force-dynamic";
 
@@ -35,15 +35,23 @@ export async function GET(request: NextRequest) {
     where.depCPDes = constituency;
   }
 
+  let partyDeputyIds: number[] | null = null;
+
   if (party) {
-    andFilters.push({
-      partyHistory: {
-        some: {
-          party: { sigla: party },
-          gpDtFim: null,
-        },
-      },
-    });
+    const rows = await prisma.$queryRaw<{ deputy_id: number }[]>`
+      SELECT latest.deputy_id
+      FROM (
+        SELECT DISTINCT ON (ph.deputy_id)
+          ph.deputy_id,
+          p.sigla
+        FROM party_history ph
+        JOIN parties p ON p.id = ph.party_id
+        ORDER BY ph.deputy_id, ph.gp_dt_inicio DESC NULLS LAST, ph.id DESC
+      ) latest
+      WHERE latest.sigla = ${party}
+    `;
+
+    partyDeputyIds = rows.map((row) => row.deputy_id);
   }
 
   if (theme) {
@@ -67,11 +75,27 @@ export async function GET(request: NextRequest) {
       andFilters.push({
         partyHistory: {
           some: {
-            gpDtInicio: { lte: sinceDate },
+            gpDtInicio: { gte: sinceDate },
           },
         },
       });
     }
+  }
+
+  if (partyDeputyIds) {
+    if (partyDeputyIds.length === 0) {
+      return NextResponse.json({
+        deputies: [],
+        pagination: {
+          page,
+          limit,
+          total: 0,
+          totalPages: 0,
+        },
+      });
+    }
+
+    where.id = { in: partyDeputyIds };
   }
 
   if (!showSuplentes) {
