@@ -1,4 +1,4 @@
-import { MessagesSquare } from "lucide-react";
+import { BadgeCheck, MessagesSquare, TrendingUp, UsersRound } from "lucide-react";
 
 interface ProfileStatsProps {
   debateRank: number;
@@ -20,17 +20,17 @@ export default function ProfileStats({
       value: `#${debateRank}`,
     },
     {
-      icon: <span className="text-primary-container text-3xl">★</span>,
+      icon: <BadgeCheck className="w-8 h-8 text-primary-container" />,
       label: "INTEGRIDADE",
       value: `${integrity}%`,
     },
     {
-      icon: <span className="text-primary-container text-3xl">♥</span>,
+      icon: <UsersRound className="w-8 h-8 text-primary-container" />,
       label: "ALIADOS",
       value: allies.toString(),
     },
     {
-      icon: <span className="text-primary-container text-3xl">▲</span>,
+      icon: <TrendingUp className="w-8 h-8 text-primary-container" />,
       label: "VISUALIZAÇÕES",
       value: muralViews >= 1000 ? `${(muralViews / 1000).toFixed(1)}k` : muralViews.toString(),
     },
