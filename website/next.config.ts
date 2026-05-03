@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
         hostname: "imagens.publico.pt",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "imagens.publicocdn.com",
+        pathname: "/**",
+      },
     ],
   },
 };

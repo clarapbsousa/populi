@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ExternalLink } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ProfileSection from "./ProfileSection";
 
 interface FactCheck {
@@ -18,30 +19,77 @@ interface DeputyFactChecksProps {
   deputyId: number;
 }
 
+const PAGE_SIZE = 20;
+
 export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
   const [factChecks, setFactChecks] = useState<FactCheck[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [total, setTotal] = useState(0);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const loadingRef = useRef(false);
+  const pageRef = useRef(1);
+
+  const fetchPage = useCallback(
+    async (pageNum: number, append: boolean) => {
+      const res = await fetch(
+        `/api/deputy/${deputyId}/fact-checks?page=${pageNum}&limit=${PAGE_SIZE}`,
+      );
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
+      const newItems = data.factChecks || [];
+      setFactChecks((prev) => {
+        if (!append) return newItems;
+        const seen = new Set(prev.map((f) => f.id));
+        const uniqueNew = newItems.filter((f) => !seen.has(f.id));
+        return [...prev, ...uniqueNew];
+      });
+      setTotal(data.pagination?.total || 0);
+      setHasMore(pageNum < (data.pagination?.totalPages || 1));
+      pageRef.current = pageNum;
+    },
+    [deputyId],
+  );
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch(`/api/deputy/${deputyId}/fact-checks`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!cancelled) {
-          setFactChecks(data.factChecks || []);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      });
+    pageRef.current = 1;
+    setHasMore(true);
+    loadingRef.current = false;
+    fetchPage(1, false).then(() => {
+      if (!cancelled) setLoading(false);
+    });
     return () => {
       cancelled = true;
     };
-  }, [deputyId]);
+  }, [fetchPage]);
+
+  const loadMore = useCallback(() => {
+    if (!hasMore || loadingRef.current || loading) return;
+    loadingRef.current = true;
+    const nextPage = pageRef.current + 1;
+    fetchPage(nextPage, true).finally(() => {
+      loadingRef.current = false;
+    });
+  }, [hasMore, loading, fetchPage]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { root: sentinel.parentElement, rootMargin: "200px" },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [loadMore]);
 
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return null;
@@ -86,9 +134,9 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
         <h2 className="font-headline text-2xl font-semibold text-primary-container uppercase tracking-wider">
           Polígrafo
         </h2>
-        {factChecks.length > 0 && (
+        {total > 0 && (
           <span className="font-label text-xs uppercase tracking-wider text-primary-container">
-            {factChecks.length} verificações
+            {factChecks.length} de {total} verificações
           </span>
         )}
       </div>
@@ -119,17 +167,9 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
               rel="noopener noreferrer"
               className="block border-2 border-stone-900 bg-surface p-6 glossy-finish hover:bg-surface-container transition-colors group"
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-body text-on-surface text-lg font-medium leading-snug mb-3">
-                    {factCheck.title}
-                  </h3>
-                  {factCheck.lead && (
-                    <p className="font-body text-on-surface-variant text-base leading-relaxed mb-3 line-clamp-3">
-                      {factCheck.lead}
-                    </p>
-                  )}
-                  <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex items-center gap-2 mb-2">
                     {factCheck.truthLevel && (
                       <span
                         className={`font-label text-sm uppercase tracking-wider text-white px-3 py-1 border border-stone-900 ${truthLevelMap(factCheck.truthLevel).color}`}
@@ -137,16 +177,44 @@ export default function DeputyFactChecks({ deputyId }: DeputyFactChecksProps) {
                         {truthLevelMap(factCheck.truthLevel).label}
                       </span>
                     )}
+                  </div>
+
+                  <h3 className="font-body text-on-surface text-lg font-medium leading-snug mb-3 group-hover:text-primary-container transition-colors">
+                    {factCheck.title}
+                  </h3>
+
+                  {factCheck.lead && (
+                    <p className="font-body text-on-surface-variant text-base leading-relaxed mb-3 line-clamp-2">
+                      {factCheck.lead}
+                    </p>
+                  )}
+
+                  <div className="flex flex-wrap items-center gap-3">
                     {factCheck.createdAt && (
-                      <span className="font-label text-sm uppercase tracking-wider text-on-surface-variant">
+                      <span className="font-label text-sm text-on-surface-variant">
                         {formatDate(factCheck.createdAt)}
                       </span>
                     )}
                   </div>
                 </div>
+
+                <ExternalLink
+                  size={18}
+                  className="text-stone-400 group-hover:text-primary-container transition-colors shrink-0 mt-1"
+                />
               </div>
             </a>
           ))}
+
+          {hasMore && (
+            <div
+              ref={sentinelRef}
+              className="border-2 border-stone-900 bg-surface p-6 glossy-finish animate-pulse"
+            >
+              <div className="h-5 bg-stone-300 rounded w-3/4 mb-3" />
+              <div className="h-4 bg-stone-300 rounded w-1/2" />
+            </div>
+          )}
         </div>
       )}
     </ProfileSection>

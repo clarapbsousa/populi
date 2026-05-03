@@ -1,8 +1,7 @@
 "use client";
 
-import { ExternalLink, Star } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { ExternalLink } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ProfileSection from "./ProfileSection";
 
 interface Article {
@@ -32,30 +31,77 @@ interface DeputyNewsProps {
   deputyId: number;
 }
 
+const PAGE_SIZE = 20;
+
 export default function DeputyNews({ deputyId }: DeputyNewsProps) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [total, setTotal] = useState(0);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const loadingRef = useRef(false);
+  const pageRef = useRef(1);
+
+  const fetchPage = useCallback(
+    async (pageNum: number, append: boolean) => {
+      const res = await fetch(
+        `/api/deputy/${deputyId}/news?page=${pageNum}&limit=${PAGE_SIZE}`,
+      );
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
+      const newArticles = data.articles || [];
+      setArticles((prev) => {
+        if (!append) return newArticles;
+        const seen = new Set(prev.map((a) => a.id));
+        const uniqueNew = newArticles.filter((a) => !seen.has(a.id));
+        return [...prev, ...uniqueNew];
+      });
+      setTotal(data.pagination?.total || 0);
+      setHasMore(pageNum < (data.pagination?.totalPages || 1));
+      pageRef.current = pageNum;
+    },
+    [deputyId],
+  );
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch(`/api/deputy/${deputyId}/news`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!cancelled) {
-          setArticles(data.articles || []);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      });
+    pageRef.current = 1;
+    setHasMore(true);
+    loadingRef.current = false;
+    fetchPage(1, false).then(() => {
+      if (!cancelled) setLoading(false);
+    });
     return () => {
       cancelled = true;
     };
-  }, [deputyId]);
+  }, [fetchPage]);
+
+  const loadMore = useCallback(() => {
+    if (!hasMore || loadingRef.current || loading) return;
+    loadingRef.current = true;
+    const nextPage = pageRef.current + 1;
+    fetchPage(nextPage, true).finally(() => {
+      loadingRef.current = false;
+    });
+  }, [hasMore, loading, fetchPage]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { root: sentinel.parentElement, rootMargin: "200px" },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [loadMore]);
 
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return null;
@@ -70,7 +116,7 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
     if (!domain) return null;
     const labels: Record<string, string> = {
       expresso: "Expresso",
-      publico: "P\u00fablico",
+      publico: "Público",
     };
     return labels[domain.toLowerCase()] || domain;
   };
@@ -82,27 +128,6 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
       publico: "bg-blue-100 text-blue-800 border-blue-300",
     };
     return colors[domain.toLowerCase()] || "bg-stone-200 text-stone-700";
-  };
-
-  const matchQualityLabel = (quality: string) => {
-    if (!quality) return null;
-    const labels: Record<string, string> = {
-      title_full: "Nome completo no t\u00edtulo",
-      title_short: "Nome no t\u00edtulo",
-      title_first_last: "Nome no t\u00edtulo",
-      title_last: "Apelido no t\u00edtulo",
-      lead_full: "Nome completo no texto",
-      lead_short: "Nome no texto",
-      lead_first_last: "Nome no texto",
-      lead_last: "Apelido no texto",
-    };
-    return labels[quality] || quality;
-  };
-
-  const matchQualityColor = (quality: string) => {
-    if (!quality) return "";
-    if (quality.startsWith("title_")) return "text-amber-600";
-    return "text-stone-500";
   };
 
   const stripHtml = (html: string | null) => {
@@ -117,11 +142,11 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
     <ProfileSection variant="secondary" className="p-6 md:p-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="font-headline text-2xl font-semibold text-primary-container uppercase tracking-wider">
-          Not\u00edcias
+          Notícias
         </h2>
-        {articles.length > 0 && (
+        {total > 0 && (
           <span className="font-label text-xs uppercase tracking-wider text-primary-container/60">
-            {articles.length} not\u00edcias
+            {articles.length} de {total} notícias
           </span>
         )}
       </div>
@@ -140,7 +165,7 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
         </div>
       ) : articles.length === 0 ? (
         <p className="font-body text-on-surface-variant">
-          Nenhuma not\u00edcia encontrada para este deputado.
+          Nenhuma notícia encontrada para este deputado.
         </p>
       ) : (
         <div className="space-y-6 max-h-[800px] overflow-y-auto pr-2 custom-scrollbar">
@@ -157,38 +182,9 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
                 rel="noopener noreferrer"
                 className="block border-2 border-stone-900 bg-surface p-6 glossy-finish hover:bg-surface-container transition-colors group"
               >
-                {article.pictureUrl && (
-                  <div className="mb-4 rounded overflow-hidden border border-stone-300">
-                    <Image
-                      src={article.pictureUrl}
-                      alt={article.pictureCaption || article.title}
-                      className="w-full h-48 object-cover"
-                      width={600}
-                      height={300}
-                      loading="lazy"
-                    />
-                    {article.pictureCaption && (
-                      <p className="text-xs text-stone-500 p-2 bg-stone-50 italic">
-                        {article.pictureCaption}
-                        {article.pictureCredits && (
-                          <span className="ml-1">
-                            ({article.pictureCredits})
-                          </span>
-                        )}
-                      </p>
-                    )}
-                  </div>
-                )}
-
                 <div className="flex items-start gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2">
-                      {article.exclusive === 1 && (
-                        <span className="inline-flex items-center gap-1 font-label text-xs uppercase tracking-wider bg-amber-200 text-amber-900 px-2 py-0.5 border border-amber-400">
-                          <Star size={12} />
-                          Exclusivo
-                        </span>
-                      )}
                       {article.domain && (
                         <span
                           className={`font-label text-sm uppercase tracking-wider px-3 py-1 border ${domainColor(article.domain)}`}
@@ -224,15 +220,6 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
                           {formatDate(article.publishedDate)}
                         </span>
                       )}
-                      {article.matchQuality && (
-                        <span
-                          className={`font-label text-xs uppercase tracking-wider ${matchQualityColor(article.matchQuality)}`}
-                        >
-                          {matchQualityLabel(article.matchQuality)}
-                          {article.mentionCount > 1 &&
-                            ` (\u00d7${article.mentionCount})`}
-                        </span>
-                      )}
                     </div>
                   </div>
 
@@ -244,6 +231,16 @@ export default function DeputyNews({ deputyId }: DeputyNewsProps) {
               </a>
             );
           })}
+
+          {hasMore && (
+            <div
+              ref={sentinelRef}
+              className="border-2 border-stone-900 bg-surface p-6 glossy-finish animate-pulse"
+            >
+              <div className="h-5 bg-stone-300 rounded w-3/4 mb-3" />
+              <div className="h-4 bg-stone-300 rounded w-1/2" />
+            </div>
+          )}
         </div>
       )}
     </ProfileSection>

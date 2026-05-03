@@ -39,8 +39,8 @@ export default function BiographicalHighlights({
         </p>
       ) : (
         <ul className="space-y-4 font-body-md overflow-y-auto pr-2">
-          {events.map((event, _index) => (
-            <li key={event.description} className="flex gap-3">
+          {events.map((event, index) => (
+            <li key={`${event.year}-${index}`} className="flex gap-3">
               <span className="font-bold text-primary">{event.year}</span>
               <span>{event.description}</span>
             </li>

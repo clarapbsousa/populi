@@ -23,14 +23,14 @@ export async function GET(
   );
   const limit = Math.max(
     1,
-    Number.parseInt(searchParams.get("limit") || "1000", 10),
+    Number.parseInt(searchParams.get("limit") || "20", 10),
   );
   const skip = (page - 1) * limit;
 
   const [matches, total] = await Promise.all([
     prisma.articleMpMatch.findMany({
       where: { mpId: deputyId },
-      orderBy: [{ mentionCount: "desc" }, { matchQuality: "asc" }],
+      orderBy: [{ matchQuality: "desc" }, { mentionCount: "desc" }],
       skip,
       take: limit,
       include: {

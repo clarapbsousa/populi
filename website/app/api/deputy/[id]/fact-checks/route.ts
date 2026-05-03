@@ -23,7 +23,7 @@ export async function GET(
   );
   const limit = Math.max(
     1,
-    Number.parseInt(searchParams.get("limit") || "1000", 10),
+    Number.parseInt(searchParams.get("limit") || "20", 10),
   );
   const skip = (page - 1) * limit;
 
