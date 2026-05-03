@@ -29,6 +29,13 @@ jobs:
         working-directory: ./website
         run: pnpm install
 
-      - name: Run tests
+      - name: Run tests with coverage
         working-directory: ./website
-        run: pnpm test
+        run: pnpm test -- --coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./website/coverage/lcov.info
+          fail_ci_if_error: false
