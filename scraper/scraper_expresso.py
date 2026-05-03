@@ -1,25 +1,24 @@
 #!/usr/bin/env python3
 """
-News Articles Scraper for Portuguese Deputies
-Reads serving deputies from PostgreSQL, scrapes news from:
-  - Expresso.pt
-  - Publico.pt
-  - Observador.pt (via Google CSE API — requires GOOGLE_CSE_API_KEY)
-Stores articles back in DB.
+News Articles Scraper — scrape_news style
+Fetches ALL politics articles from Expresso and Publico APIs directly,
+stores in a unified articles table. No per-deputy matching.
+
+Schema matches scrape_news:
+  code, title, lead, friendly_uri, link, published_date, last_modified_date,
+  main_category, article_type, exclusive, authors, picture_url, picture_caption,
+  picture_credits, domain, uuid
 """
 
 import os
 import sys
 import time
-import random
+import json
 from datetime import datetime
-from typing import List, Dict, Optional
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Optional
 
 import requests
-from bs4 import BeautifulSoup
 import psycopg2
-from psycopg2.extras import RealDictCursor
 
 try:
     from tqdm import tqdm
@@ -27,30 +26,19 @@ except ImportError:
     tqdm = None
 
 # ── Configuration ────────────────────────────────────────────────────────────
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/124.0.0.0 Safari/537.36"
-    ),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8",
-}
-REQUEST_DELAY = 0.15
-JITTER = 0.1
-MAX_WORKERS = 12
-MAX_ARTICLES_PER_SOURCE = 20
-MAX_PAGES = 50
+EXPRESSO_FEED_URL = "https://expresso.pt/api/gs/expresso/v1/molecule/feed"
+PUBLICO_LIST_URL = "https://www.publico.pt/api/list/politica"
+STOP_DATE = "2020-01-01T00:00:00.000Z"
+STOP_DATE_PUBLICO = "2020-01-01"
 
-EXPRESSO_API_URL = "https://expresso.pt/api/molecule/search"
-PUBLICO_API_URL = "https://www.publico.pt/api/search"
-OBSERVADOR_CSE_ID = "018163261140574844532:-lpyfofgllu"
+EXPRESSO_MAX_RETRIES = 3
+EXPRESSO_BASE_DELAY = 2
+PUBLICO_MAX_RETRIES = 5
+PUBLICO_BASE_DELAY = 3
 
 # ── DB helpers ───────────────────────────────────────────────────────────────
 
-
 def _find_env_file() -> Optional[str]:
-    """Look for website/.env or .env walking up from this file."""
     start = os.path.dirname(os.path.abspath(__file__))
     for _ in range(5):
         for name in ("website/.env", ".env"):
@@ -65,7 +53,6 @@ def _find_env_file() -> Optional[str]:
 
 
 def get_db_url() -> str:
-    """Read DATABASE_URL from .env or environment."""
     env_path = _find_env_file()
     if env_path:
         with open(env_path) as f:
@@ -84,474 +71,375 @@ def get_connection():
     return psycopg2.connect(db_url)
 
 
-def get_deputies(conn) -> List[Dict]:
-    """Fetch all serving deputies (excluding suplentes) with their IDs and parliamentary names."""
-    with conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute("""
-            SELECT d.id, d.dep_nome_parlamentar as name, d.dep_cp_des as party
-            FROM deputies d
-            WHERE EXISTS (
-                SELECT 1 FROM status_history sh
-                WHERE sh.deputy_id = d.id
-                AND sh.sio_dt_fim IS NULL
-                AND sh.sio_des != 'Suplente'
-            )
-            ORDER BY d.id
-        """)
-        return [dict(row) for row in cur.fetchall()]
-
-
-# ── Shared helpers ───────────────────────────────────────────────────────────
-
-
-def _throttled_sleep():
-    time.sleep(REQUEST_DELAY + random.uniform(0, JITTER))
-
-
-def _match_score(name: str, title: str) -> int:
-    """Return match score: 2=full name in title, 1=partial name, 0=no match."""
-    if not title:
-        return 0
-    title_lower = title.lower()
-    name_lower = name.lower()
-
-    if name_lower in title_lower:
-        return 2
-
-    for part in name_lower.split():
-        if len(part) > 2 and part in title_lower:
-            return 1
-
-    return 0
-
-
-def _dedup_and_sort(articles: List[Dict], name: str, max_articles: int) -> List[Dict]:
-    """Score, deduplicate by URL, sort and limit articles."""
-    seen_urls = set()
-    result = []
-    for art in articles:
-        url = art.get("url")
-        if not url or url in seen_urls:
-            continue
-        seen_urls.add(url)
-        art["_score"] = _match_score(name, art.get("title", ""))
-        result.append(art)
-
-    result.sort(
-        key=lambda a: (
-            a["_score"],
-            a.get("published_at") or "1970-01-01T00:00:00",
-        ),
-        reverse=True,
-    )
-    return result[:max_articles]
-
-
-# ── Expresso ─────────────────────────────────────────────────────────────────
-
-
-def _fetch_expresso(session: requests.Session, name: str, page: int, offset: int) -> Optional[str]:
-    params = {"q": name, "page": page, "offset": offset}
-    try:
-        resp = session.get(EXPRESSO_API_URL, params=params, headers=HEADERS, timeout=30)
-        resp.raise_for_status()
-        return resp.text
-    except requests.RequestException:
-        return None
-
-
-def _parse_expresso(html: str) -> List[Dict]:
-    soup = BeautifulSoup(html, "html.parser")
-    articles = []
-
-    for article_tag in soup.find_all("article"):
-        # Extract type from AT-* class
-        article_type = None
-        for cls in article_tag.get("class", []):
-            if cls.startswith("AT-"):
-                article_type = cls.replace("AT-", "")
-                break
-
-        # Skip non-news content
-        if article_type and article_type.lower() not in ("noticia", "article"):
-            continue
-
-        title_tag = article_tag.find("h2", class_="title")
-        title = None
-        url = None
-        if title_tag:
-            a = title_tag.find("a", href=True)
-            if a:
-                title = a.get_text(strip=True)
-                url = a["href"]
-                if url.startswith("/"):
-                    url = f"https://expresso.pt{url}"
-
-        if not title or not url:
-            continue
-
-        section_tag = article_tag.find("p", class_="mainSection")
-        section = None
-        if section_tag:
-            section_a = section_tag.find("a")
-            section = section_a.get_text(strip=True) if section_a else section_tag.get_text(strip=True)
-
-        date_tag = article_tag.find("p", class_="publishedDate")
-        published_at = date_tag.get("datetime") if date_tag else None
-
-        author_tag = article_tag.find("p", class_="author")
-        authors = []
-        if author_tag:
-            for a in author_tag.find_all("a"):
-                authors.append(a.get_text(strip=True))
-        authors_str = ", ".join(authors) if authors else None
-
-        lead_tag = article_tag.find("h3", class_="lead")
-        lead = lead_tag.get_text(strip=True) if lead_tag else None
-
-        has_picture = bool("hasPicture" in " ".join(article_tag.get("class", [])))
-
-        articles.append({
-            "title": title,
-            "url": url,
-            "section": section,
-            "published_at": published_at,
-            "authors": authors_str,
-            "lead": lead,
-            "has_picture": has_picture,
-            "source": "expresso",
-        })
-
-    return articles
-
-
-def scrape_expresso(session: requests.Session, name: str) -> List[Dict]:
-    all_articles = []
-    empty_page_count = 0
-    page_num = 1
-
-    while empty_page_count < 2 and page_num <= MAX_PAGES:
-        html = _fetch_expresso(session, name, page_num, 0)
-        if html is None:
-            time.sleep(0.5)
-            html = _fetch_expresso(session, name, page_num, 0)
-            if html is None:
-                break
-
-        articles = _parse_expresso(html)
-        if not articles:
-            empty_page_count += 1
-            page_num += 1
-            continue
-
-        empty_page_count = 0
-        all_articles.extend(articles)
-
-        if sum(1 for a in all_articles if _match_score(name, a.get("title", "")) == 2) >= MAX_ARTICLES_PER_SOURCE:
-            break
-
-        _throttled_sleep()
-        page_num += 1
-
-    return _dedup_and_sort(all_articles, name, MAX_ARTICLES_PER_SOURCE)
-
-
-# ── Publico ──────────────────────────────────────────────────────────────────
-
-
-def _fetch_publico(session: requests.Session, name: str, page: int = 1) -> Optional[List[Dict]]:
-    params = {"q": name}
-    if page > 1:
-        params["page"] = page
-    try:
-        resp = session.get(PUBLICO_API_URL, params=params, headers=HEADERS, timeout=30)
-        resp.raise_for_status()
-        return resp.json()
-    except (requests.RequestException, ValueError):
-        return None
-
-
-def _parse_publico(data: List[Dict]) -> List[Dict]:
-    articles = []
-    for item in data:
-        title = item.get("titulo")
-        url = item.get("url") or item.get("fullUrl")
-        if not title or not url:
-            continue
-
-        # Skip non-news content
-        tipo = item.get("tipo")
-        if tipo and tipo.lower() not in ("noticia", "article"):
-            continue
-
-        # Authors
-        authors_list = item.get("autores", [])
-        authors_str = ", ".join(a.get("nome", "") for a in authors_list if a.get("nome")) or None
-
-        # Published date
-        published_at = item.get("data")
-
-        # Lead / description
-        lead = item.get("descricao") or item.get("lead")
-
-        # Section from rubrica or principal tag
-        section = item.get("rubrica")
-        if not section:
-            tags = item.get("tags", [])
-            for tag in tags:
-                if tag.get("isPrincipal"):
-                    section = tag.get("nome")
-                    break
-
-        # Has picture if multimediaPrincipal is present and not empty
-        has_picture = bool(item.get("multimediaPrincipal"))
-
-        articles.append({
-            "title": title,
-            "url": url,
-            "section": section,
-            "published_at": published_at,
-            "authors": authors_str,
-            "lead": lead,
-            "has_picture": has_picture,
-            "source": "publico",
-        })
-
-    return articles
-
-
-def scrape_publico(session: requests.Session, name: str) -> List[Dict]:
-    all_articles = []
-    empty_page_count = 0
-    page_num = 1
-
-    while empty_page_count < 2 and page_num <= MAX_PAGES:
-        data = _fetch_publico(session, name, page_num)
-        if data is None:
-            time.sleep(0.5)
-            data = _fetch_publico(session, name, page_num)
-            if data is None:
-                break
-
-        articles = _parse_publico(data)
-        if not articles:
-            empty_page_count += 1
-            page_num += 1
-            continue
-
-        empty_page_count = 0
-        all_articles.extend(articles)
-
-        if sum(1 for a in all_articles if _match_score(name, a.get("title", "")) == 2) >= MAX_ARTICLES_PER_SOURCE:
-            break
-
-        _throttled_sleep()
-        page_num += 1
-
-    return _dedup_and_sort(all_articles, name, MAX_ARTICLES_PER_SOURCE)
-
-
-# ── Observador (Google CSE API) ──────────────────────────────────────────────
-
-
-def _fetch_observador_cse(name: str, start: int = 1) -> Optional[Dict]:
-    api_key = os.environ.get("GOOGLE_CSE_API_KEY")
-    if not api_key:
-        return None
-    params = {
-        "key": api_key,
-        "cx": OBSERVADOR_CSE_ID,
-        "q": name,
-        "start": start,
-        "num": 10,
-        "lr": "lang_pt",
-    }
-    try:
-        resp = requests.get(
-            "https://www.googleapis.com/customsearch/v1",
-            params=params,
-            headers=HEADERS,
-            timeout=30,
-        )
-        resp.raise_for_status()
-        return resp.json()
-    except (requests.RequestException, ValueError):
-        return None
-
-
-def _parse_observador_cse(data: Dict) -> List[Dict]:
-    articles = []
-    for item in data.get("items", []):
-        title = item.get("title")
-        url = item.get("link")
-        if not title or not url:
-            continue
-
-        # Try to extract metadata from pagemap
-        pagemap = item.get("pagemap", {})
-        metatags = pagemap.get("metatags", [{}])[0]
-
-        published_at = metatags.get("article:published_time") or metatags.get("datePublished")
-        section = metatags.get("article:section")
-        authors_str = metatags.get("author")
-
-        lead = item.get("snippet")
-        has_picture = bool(pagemap.get("cse_image", [{}])[0].get("src"))
-
-        articles.append({
-            "title": title,
-            "url": url,
-            "section": section,
-            "published_at": published_at,
-            "authors": authors_str,
-            "lead": lead,
-            "has_picture": has_picture,
-            "source": "observador",
-        })
-
-    return articles
-
-
-def scrape_observador(name: str) -> List[Dict]:
-    all_articles = []
-    for start in (1, 11):
-        data = _fetch_observador_cse(name, start=start)
-        if not data:
-            break
-        articles = _parse_observador_cse(data)
-        if not articles:
-            break
-        all_articles.extend(articles)
-        _throttled_sleep()
-
-    return _dedup_and_sort(all_articles, name, MAX_ARTICLES_PER_SOURCE)
-
-
-# ── Worker ────────────────────────────────────────────────────────────────────
-
-
-def scrape_deputy(deputy: Dict) -> Dict:
-    """Scrape articles for one deputy from all enabled sources."""
-    deputy_id = deputy["id"]
-    name = deputy["name"]
-    party = deputy.get("party", "")
-
-    session = requests.Session()
-    all_articles = []
-
-    # Expresso
-    all_articles.extend(scrape_expresso(session, name))
-
-    # Publico
-    all_articles.extend(scrape_publico(session, name))
-
-    # Observador (only if API key is configured)
-    observador_articles = scrape_observador(name)
-    all_articles.extend(observador_articles)
-
-    if not all_articles:
-        return {"name": name, "party": party, "total_new": 0}
-
-    conn = get_connection()
-    total_new = 0
+def ensure_articles_table(conn):
     with conn.cursor() as cur:
-        for art in all_articles:
-            try:
-                # Parse ISO datetime
-                pub_dt = None
-                if art.get("published_at"):
-                    try:
-                        pub_dt = datetime.fromisoformat(art["published_at"].replace("Z", "+00:00"))
-                    except ValueError:
-                        pass
-
-                cur.execute("SAVEPOINT insert_sp")
-                cur.execute("""
-                    INSERT INTO articles
-                    (deputy_id, title, url, section, published_at, authors, lead, has_picture, source, updated_at)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    ON CONFLICT (deputy_id, url) DO NOTHING
-                """, (
-                    deputy_id,
-                    art["title"],
-                    art["url"],
-                    art.get("section"),
-                    pub_dt,
-                    art.get("authors"),
-                    art.get("lead"),
-                    bool(art.get("has_picture")),
-                    art.get("source"),
-                    datetime.now(),
-                ))
-                if cur.rowcount > 0:
-                    total_new += 1
-                cur.execute("RELEASE SAVEPOINT insert_sp")
-            except Exception as exc:
-                cur.execute("ROLLBACK TO SAVEPOINT insert_sp")
-                print(f"  [!] DB insert error for {name}: {exc}")
-
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS articles (
+                id SERIAL PRIMARY KEY,
+                code TEXT UNIQUE,
+                title TEXT,
+                lead TEXT,
+                friendly_uri TEXT,
+                link TEXT,
+                published_date TEXT,
+                last_modified_date TEXT,
+                main_category TEXT,
+                article_type TEXT,
+                exclusive INTEGER DEFAULT 0,
+                authors TEXT,
+                picture_url TEXT,
+                picture_caption TEXT,
+                picture_credits TEXT,
+                domain TEXT,
+                uuid TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        cur.execute("""
+            CREATE INDEX IF NOT EXISTS idx_articles_published_date ON articles (published_date)
+        """)
+        cur.execute("""
+            CREATE INDEX IF NOT EXISTS idx_articles_domain ON articles (domain)
+        """)
     conn.commit()
-    conn.close()
-    return {"name": name, "party": party, "total_new": total_new}
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
+def insert_article(cur, article: dict) -> bool:
+    try:
+        cur.execute("""
+            INSERT INTO articles
+            (code, title, lead, friendly_uri, link, published_date, last_modified_date,
+             main_category, article_type, exclusive, authors, picture_url, picture_caption,
+             picture_credits, domain, uuid)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (code) DO NOTHING
+        """, (
+            article.get("code", ""),
+            article.get("title", ""),
+            article.get("lead", ""),
+            article.get("friendly_uri", ""),
+            article.get("link", ""),
+            article.get("published_date", ""),
+            article.get("last_modified_date", ""),
+            article.get("main_category", ""),
+            article.get("article_type", ""),
+            article.get("exclusive", 0),
+            article.get("authors", ""),
+            article.get("picture_url", ""),
+            article.get("picture_caption", ""),
+            article.get("picture_credits", ""),
+            article.get("domain", ""),
+            article.get("uuid", ""),
+        ))
+        return cur.rowcount > 0
+    except Exception:
+        return False
 
 
-def main():
-    conn = get_connection()
-    deputies = get_deputies(conn)
-    conn.close()
+# ── Progress bar ─────────────────────────────────────────────────────────────
 
-    total_politicians = len(deputies)
-    total_articles = 0
-    completed = 0
-
-    has_observador_key = bool(os.environ.get("GOOGLE_CSE_API_KEY"))
-    sources_msg = "Expresso + Publico"
-    if has_observador_key:
-        sources_msg += " + Observador"
-    else:
-        sources_msg += " (Observador skipped — set GOOGLE_CSE_API_KEY env var to enable)"
-
-    print(f"[i] Starting scrape of {total_politicians} deputies from {sources_msg} with {MAX_WORKERS} workers...")
+def print_progress(current, estimated_total, label, extra=""):
+    pct = min(100, int((current / estimated_total) * 100)) if estimated_total else 0
+    bar_len = 40
+    filled = int(bar_len * pct / 100)
+    bar = "\u2588" * filled + "\u2591" * (bar_len - filled)
+    sys.stdout.write(f"\r[{bar}] {pct}% | {label}: {current} {extra}")
     sys.stdout.flush()
 
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {executor.submit(scrape_deputy, dep): dep for dep in deputies}
-        pbar = tqdm(total=total_politicians, desc="Scraping", unit="deputy", ncols=100) if tqdm else None
 
-        for future in as_completed(futures):
-            dep = futures[future]
-            try:
-                result = future.result()
-            except Exception as exc:
-                err = f"[✗] {dep['name']} failed: {exc}"
-                if pbar:
-                    pbar.write(err)
-                else:
-                    print(err)
-                    sys.stdout.flush()
-                completed += 1
-                if pbar:
-                    pbar.update(1)
-                continue
+# ── Expresso scraper ─────────────────────────────────────────────────────────
 
-            completed += 1
-            total_articles += result["total_new"]
-            msg = f"[{completed}/{total_politicians}] {result['name']}: {result['total_new']} new articles"
-
-            if pbar:
-                pbar.write(msg)
-                pbar.update(1)
-            else:
-                print(msg)
+def fetch_expresso_batch(until: str, page: int, limit: int) -> Optional[dict]:
+    params = {
+        "categories": "/politica",
+        "category": "politica",
+        "contentTypes": "ARTICLE",
+        "limit": limit,
+        "until": until,
+        "page": page,
+    }
+    for attempt in range(EXPRESSO_MAX_RETRIES):
+        try:
+            resp = requests.get(EXPRESSO_FEED_URL, params=params, timeout=30)
+            if resp.status_code == 500 and attempt < EXPRESSO_MAX_RETRIES - 1:
+                wait = EXPRESSO_BASE_DELAY * (2 ** attempt)
+                sys.stdout.write(f"\n  Expresso: server error, retrying in {wait}s...\n")
                 sys.stdout.flush()
+                time.sleep(wait)
+                continue
+            resp.raise_for_status()
+            return resp.json()
+        except requests.exceptions.RequestException as e:
+            if attempt < EXPRESSO_MAX_RETRIES - 1:
+                wait = EXPRESSO_BASE_DELAY * (2 ** attempt)
+                sys.stdout.write(f"\n  Expresso: {e}, retrying in {wait}s...\n")
+                sys.stdout.flush()
+                time.sleep(wait)
+            else:
+                raise
+    return None
 
-        if pbar:
-            pbar.close()
 
-    print(f"\n[✓] Done. Processed {completed}/{total_politicians} deputies, stored {total_articles} new articles.")
+def transform_expresso_item(item: dict) -> dict:
+    authors_list = item.get("authors", []) or []
+    authors_str = ", ".join([a.get("name", "") for a in authors_list if isinstance(a, dict) and a.get("name")])
+
+    picture = item.get("picture", {}) or {}
+    picture_url = picture.get("urlLandscape", "") or ""
+    picture_caption = picture.get("caption", "") or ""
+    picture_credits = picture.get("credits", "") or ""
+
+    main_cat = item.get("mainCategory", "")
+    if isinstance(main_cat, dict):
+        main_cat = main_cat.get("name", "")
+
+    domain_obj = item.get("domain", "")
+    if isinstance(domain_obj, dict):
+        domain = domain_obj.get("name", "")
+    else:
+        domain = domain_obj or "Expresso"
+
+    return {
+        "code": str(item.get("code", "")),
+        "title": str(item.get("title", "") or ""),
+        "lead": str(item.get("lead", "") or ""),
+        "friendly_uri": str(item.get("friendlyURI", "") or ""),
+        "link": str(item.get("link", "") or ""),
+        "published_date": str(item.get("publishedDate", "") or ""),
+        "last_modified_date": str(item.get("lastModifiedDate", "") or ""),
+        "main_category": str(main_cat) if main_cat else "",
+        "article_type": str(item.get("articleType", "") or ""),
+        "exclusive": 1 if item.get("exclusive") else 0,
+        "authors": authors_str,
+        "picture_url": picture_url,
+        "picture_caption": picture_caption,
+        "picture_credits": picture_credits,
+        "domain": domain,
+        "uuid": str(item.get("uuid", "") or ""),
+    }
+
+
+def scrape_expresso_to_db(conn):
+    print("\n=== Expresso ===")
+    ensure_articles_table(conn)
+
+    seen_codes = set()
+    total_inserted = 0
+    total_fetched = 0
+
+    until = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.000Z")
+    page = 0
+    limit = 100
+    estimated_total = 30000
+
+    print("Fetching Expresso Politica articles back to 2020...")
+    print_progress(0, estimated_total, "Fetched")
+
+    with conn.cursor() as cur:
+        while True:
+            data = fetch_expresso_batch(until, page, limit)
+            if data is None:
+                print("\nFailed to fetch after retries. Stopping.")
+                break
+
+            items = data.get("contents", [])
+            if not items:
+                print("\nNo more items returned by API.")
+                break
+
+            dates = [item.get("publishedDate", "9999") for item in items]
+            oldest_in_batch = min(dates)
+
+            for item in items:
+                code = item.get("code")
+                if code and code not in seen_codes:
+                    seen_codes.add(code)
+                    total_fetched += 1
+
+                    article_type = item.get("type", "")
+                    published = item.get("publishedDate", "")
+                    if article_type == "ARTICLE" and published >= STOP_DATE:
+                        article = transform_expresso_item(item)
+                        if insert_article(cur, article):
+                            total_inserted += 1
+
+            print_progress(total_fetched, estimated_total, "Fetched",
+                         f"| Inserted: {total_inserted} | Oldest: {oldest_in_batch[:10]}")
+
+            if oldest_in_batch < STOP_DATE:
+                print("\nReached 2020! Stopping.")
+                break
+
+            if len(items) < limit:
+                until = oldest_in_batch
+                page = 0
+            else:
+                page += 1
+
+            if page >= 80:
+                until = oldest_in_batch
+                page = 0
+
+            time.sleep(0.3)
+
+    conn.commit()
+    print(f"\nExpresso done: {total_fetched} unique items, {total_inserted} new articles inserted.")
+    return total_inserted
+
+
+# ── Publico scraper ──────────────────────────────────────────────────────────
+
+def fetch_publico_page(page: int) -> Optional[list]:
+    for attempt in range(PUBLICO_MAX_RETRIES):
+        try:
+            resp = requests.get(f"{PUBLICO_LIST_URL}?page={page}", timeout=30)
+            resp.raise_for_status()
+            return resp.json()
+        except requests.exceptions.RequestException as e:
+            if attempt < PUBLICO_MAX_RETRIES - 1:
+                wait = PUBLICO_BASE_DELAY * (1.5 ** attempt)
+                sys.stdout.write(f"\n  Publico page {page}: {e}, retrying in {wait:.0f}s...\n")
+                sys.stdout.flush()
+                time.sleep(wait)
+            else:
+                raise
+    return None
+
+
+def transform_publico_item(item: dict) -> dict:
+    authors_list = item.get("autores", []) or []
+    authors_str = ", ".join([a.get("nome", "") for a in authors_list if isinstance(a, dict) and a.get("nome")])
+
+    picture_url = item.get("multimediaPrincipal", "") or ""
+    picture_caption = item.get("multimediaPrincipalLegenda", "") or ""
+    main_cat = item.get("rubrica", "") or ""
+
+    code = str(item.get("itemId", ""))
+    link = item.get("fullUrl", "") or item.get("url", "") or ""
+    title = item.get("titulo", "") or ""
+    lead = item.get("descricao", "") or ""
+    published_date = item.get("data", "") or ""
+    last_modified = item.get("dataActualizacao", "") or ""
+    article_type = item.get("tipo", "") or ""
+    is_exclusive = 1 if item.get("isExclusive") else 0
+
+    return {
+        "code": code,
+        "title": title,
+        "lead": lead,
+        "friendly_uri": "",
+        "link": link,
+        "published_date": published_date,
+        "last_modified_date": last_modified,
+        "main_category": main_cat,
+        "article_type": article_type,
+        "exclusive": is_exclusive,
+        "authors": authors_str,
+        "picture_url": picture_url,
+        "picture_caption": picture_caption,
+        "picture_credits": "",
+        "domain": "Publico",
+        "uuid": code,
+    }
+
+
+def scrape_publico_to_db(conn):
+    print("\n=== Publico ===")
+    ensure_articles_table(conn)
+
+    seen_ids = set()
+    total_inserted = 0
+    total_fetched = 0
+    page = 1
+    estimated_total = 30000
+
+    print("Fetching Publico Politica articles back to 2020...")
+    print_progress(0, estimated_total, "Fetched")
+
+    with conn.cursor() as cur:
+        while True:
+            data = fetch_publico_page(page)
+            if data is None:
+                print(f"\nPage {page}: failed after retries. Stopping.")
+                break
+
+            if not data:
+                print(f"\nPage {page}: empty, stopping.")
+                break
+
+            dates = [item.get("data", "9999") for item in data]
+            oldest_in_batch = min(dates)
+
+            for item in data:
+                item_id = item.get("id")
+                if item_id and item_id not in seen_ids:
+                    seen_ids.add(item_id)
+                    total_fetched += 1
+
+                    published = item.get("data", "")
+                    if published >= STOP_DATE_PUBLICO:
+                        article = transform_publico_item(item)
+                        if insert_article(cur, article):
+                            total_inserted += 1
+
+            print_progress(total_fetched, estimated_total, "Fetched",
+                         f"| Inserted: {total_inserted} | Page: {page} | Oldest: {oldest_in_batch[:10]}")
+
+            if oldest_in_batch < STOP_DATE_PUBLICO:
+                print(f"\nReached 2019 at page {page}! Stopping.")
+                break
+
+            if len(data) < 10:
+                print(f"\nLast page ({page}): {len(data)} items.")
+                break
+
+            page += 1
+            time.sleep(0.2)
+
+    conn.commit()
+    print(f"\nPublico done: {total_fetched} unique items, {total_inserted} new articles inserted.")
+    return total_inserted
+
+
+# ── Main ─────────────────────────────────────────────────────────────────────
+
+def main():
+    start_time = time.time()
+
+    conn = get_connection()
+    try:
+        expresso_count = scrape_expresso_to_db(conn)
+        publico_count = scrape_publico_to_db(conn)
+
+        elapsed = time.time() - start_time
+        print(f"\n{'='*50}")
+        print(f"Total: {expresso_count + publico_count} new articles inserted")
+        print(f"  Expresso: {expresso_count}")
+        print(f"  Publico:  {publico_count}")
+        print(f"Time: {elapsed:.1f}s")
+
+        with conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*) FROM articles")
+            total = cur.fetchone()[0]
+            cur.execute("SELECT domain, COUNT(*) FROM articles GROUP BY domain ORDER BY COUNT(*) DESC")
+            by_domain = cur.fetchall()
+            cur.execute("""
+                SELECT EXTRACT(YEAR FROM TO_DATE(published_date, 'YYYY-MM-DD')) as year, COUNT(*)
+                FROM articles WHERE published_date IS NOT NULL
+                GROUP BY year ORDER BY year DESC LIMIT 10
+            """)
+            by_year = cur.fetchall()
+
+        print(f"\nTotal articles in DB: {total}")
+        print("By domain:")
+        for domain, count in by_domain:
+            print(f"  {domain}: {count}")
+        print("By year (top 10):")
+        for year, count in by_year:
+            print(f"  {int(year) if year else 'NULL'}: {count}")
+
+    finally:
+        conn.close()
 
 
 if __name__ == "__main__":

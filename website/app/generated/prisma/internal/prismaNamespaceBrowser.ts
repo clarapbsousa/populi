@@ -74,7 +74,12 @@ export const ModelName = {
   RelIniciativas: 'RelIniciativas',
   RelIniEuropeias: 'RelIniEuropeias',
   RelPeticoes: 'RelPeticoes',
+  LegislativeInitiative: 'LegislativeInitiative',
+  InitiativeAuthor: 'InitiativeAuthor',
+  InitiativeEvent: 'InitiativeEvent',
+  InitiativeVote: 'InitiativeVote',
   Article: 'Article',
+  ArticleMpMatch: 'ArticleMpMatch',
   FactCheck: 'FactCheck'
 } as const
 
@@ -447,22 +452,104 @@ export const RelPeticoesScalarFieldEnum = {
 export type RelPeticoesScalarFieldEnum = (typeof RelPeticoesScalarFieldEnum)[keyof typeof RelPeticoesScalarFieldEnum]
 
 
-export const ArticleScalarFieldEnum = {
+export const LegislativeInitiativeScalarFieldEnum = {
   id: 'id',
-  deputyId: 'deputyId',
-  title: 'title',
-  url: 'url',
-  section: 'section',
-  publishedAt: 'publishedAt',
-  authors: 'authors',
-  lead: 'lead',
-  hasPicture: 'hasPicture',
-  source: 'source',
+  iniId: 'iniId',
+  iniNr: 'iniNr',
+  iniTitulo: 'iniTitulo',
+  iniDescTipo: 'iniDescTipo',
+  iniTipo: 'iniTipo',
+  iniLeg: 'iniLeg',
+  iniEpigrafe: 'iniEpigrafe',
+  iniObs: 'iniObs',
+  iniLinkTexto: 'iniLinkTexto',
+  dataInicioLeg: 'dataInicioLeg',
+  dataFimLeg: 'dataFimLeg',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
+export type LegislativeInitiativeScalarFieldEnum = (typeof LegislativeInitiativeScalarFieldEnum)[keyof typeof LegislativeInitiativeScalarFieldEnum]
+
+
+export const InitiativeAuthorScalarFieldEnum = {
+  id: 'id',
+  initiativeId: 'initiativeId',
+  authorType: 'authorType',
+  authorName: 'authorName',
+  authorSigla: 'authorSigla'
+} as const
+
+export type InitiativeAuthorScalarFieldEnum = (typeof InitiativeAuthorScalarFieldEnum)[keyof typeof InitiativeAuthorScalarFieldEnum]
+
+
+export const InitiativeEventScalarFieldEnum = {
+  id: 'id',
+  initiativeId: 'initiativeId',
+  evtId: 'evtId',
+  codigoFase: 'codigoFase',
+  fase: 'fase',
+  dataFase: 'dataFase',
+  comissao: 'comissao',
+  oevId: 'oevId',
+  obsFase: 'obsFase'
+} as const
+
+export type InitiativeEventScalarFieldEnum = (typeof InitiativeEventScalarFieldEnum)[keyof typeof InitiativeEventScalarFieldEnum]
+
+
+export const InitiativeVoteScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  voteId: 'voteId',
+  data: 'data',
+  resultado: 'resultado',
+  detalhe: 'detalhe',
+  descricao: 'descricao',
+  reuniao: 'reuniao',
+  tipoReuniao: 'tipoReuniao',
+  unanime: 'unanime'
+} as const
+
+export type InitiativeVoteScalarFieldEnum = (typeof InitiativeVoteScalarFieldEnum)[keyof typeof InitiativeVoteScalarFieldEnum]
+
+
+export const ArticleScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  title: 'title',
+  lead: 'lead',
+  friendlyUri: 'friendlyUri',
+  link: 'link',
+  publishedDate: 'publishedDate',
+  lastModifiedDate: 'lastModifiedDate',
+  mainCategory: 'mainCategory',
+  articleType: 'articleType',
+  exclusive: 'exclusive',
+  authors: 'authors',
+  pictureUrl: 'pictureUrl',
+  pictureCaption: 'pictureCaption',
+  pictureCredits: 'pictureCredits',
+  domain: 'domain',
+  uuid: 'uuid',
+  createdAt: 'createdAt'
+} as const
+
 export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
+
+
+export const ArticleMpMatchScalarFieldEnum = {
+  id: 'id',
+  articleId: 'articleId',
+  mpId: 'mpId',
+  mpName: 'mpName',
+  mpParty: 'mpParty',
+  mentionCount: 'mentionCount',
+  matchQuality: 'matchQuality',
+  articleSource: 'articleSource'
+} as const
+
+export type ArticleMpMatchScalarFieldEnum = (typeof ArticleMpMatchScalarFieldEnum)[keyof typeof ArticleMpMatchScalarFieldEnum]
 
 
 export const FactCheckScalarFieldEnum = {

@@ -157,10 +157,35 @@ export type RelIniEuropeias = Prisma.RelIniEuropeiasModel
  */
 export type RelPeticoes = Prisma.RelPeticoesModel
 /**
+ * Model LegislativeInitiative
+ * 
+ */
+export type LegislativeInitiative = Prisma.LegislativeInitiativeModel
+/**
+ * Model InitiativeAuthor
+ * 
+ */
+export type InitiativeAuthor = Prisma.InitiativeAuthorModel
+/**
+ * Model InitiativeEvent
+ * 
+ */
+export type InitiativeEvent = Prisma.InitiativeEventModel
+/**
+ * Model InitiativeVote
+ * 
+ */
+export type InitiativeVote = Prisma.InitiativeVoteModel
+/**
  * Model Article
  * 
  */
 export type Article = Prisma.ArticleModel
+/**
+ * Model ArticleMpMatch
+ * 
+ */
+export type ArticleMpMatch = Prisma.ArticleMpMatchModel
 /**
  * Model FactCheck
  * 

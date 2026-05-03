@@ -28,114 +28,150 @@ export type AggregateArticle = {
 
 export type ArticleAvgAggregateOutputType = {
   id: number | null
-  deputyId: number | null
+  exclusive: number | null
 }
 
 export type ArticleSumAggregateOutputType = {
   id: number | null
-  deputyId: number | null
+  exclusive: number | null
 }
 
 export type ArticleMinAggregateOutputType = {
   id: number | null
-  deputyId: number | null
+  code: string | null
   title: string | null
-  url: string | null
-  section: string | null
-  publishedAt: Date | null
-  authors: string | null
   lead: string | null
-  hasPicture: boolean | null
-  source: string | null
+  friendlyUri: string | null
+  link: string | null
+  publishedDate: string | null
+  lastModifiedDate: string | null
+  mainCategory: string | null
+  articleType: string | null
+  exclusive: number | null
+  authors: string | null
+  pictureUrl: string | null
+  pictureCaption: string | null
+  pictureCredits: string | null
+  domain: string | null
+  uuid: string | null
   createdAt: Date | null
-  updatedAt: Date | null
 }
 
 export type ArticleMaxAggregateOutputType = {
   id: number | null
-  deputyId: number | null
+  code: string | null
   title: string | null
-  url: string | null
-  section: string | null
-  publishedAt: Date | null
-  authors: string | null
   lead: string | null
-  hasPicture: boolean | null
-  source: string | null
+  friendlyUri: string | null
+  link: string | null
+  publishedDate: string | null
+  lastModifiedDate: string | null
+  mainCategory: string | null
+  articleType: string | null
+  exclusive: number | null
+  authors: string | null
+  pictureUrl: string | null
+  pictureCaption: string | null
+  pictureCredits: string | null
+  domain: string | null
+  uuid: string | null
   createdAt: Date | null
-  updatedAt: Date | null
 }
 
 export type ArticleCountAggregateOutputType = {
   id: number
-  deputyId: number
+  code: number
   title: number
-  url: number
-  section: number
-  publishedAt: number
-  authors: number
   lead: number
-  hasPicture: number
-  source: number
+  friendlyUri: number
+  link: number
+  publishedDate: number
+  lastModifiedDate: number
+  mainCategory: number
+  articleType: number
+  exclusive: number
+  authors: number
+  pictureUrl: number
+  pictureCaption: number
+  pictureCredits: number
+  domain: number
+  uuid: number
   createdAt: number
-  updatedAt: number
   _all: number
 }
 
 
 export type ArticleAvgAggregateInputType = {
   id?: true
-  deputyId?: true
+  exclusive?: true
 }
 
 export type ArticleSumAggregateInputType = {
   id?: true
-  deputyId?: true
+  exclusive?: true
 }
 
 export type ArticleMinAggregateInputType = {
   id?: true
-  deputyId?: true
+  code?: true
   title?: true
-  url?: true
-  section?: true
-  publishedAt?: true
-  authors?: true
   lead?: true
-  hasPicture?: true
-  source?: true
+  friendlyUri?: true
+  link?: true
+  publishedDate?: true
+  lastModifiedDate?: true
+  mainCategory?: true
+  articleType?: true
+  exclusive?: true
+  authors?: true
+  pictureUrl?: true
+  pictureCaption?: true
+  pictureCredits?: true
+  domain?: true
+  uuid?: true
   createdAt?: true
-  updatedAt?: true
 }
 
 export type ArticleMaxAggregateInputType = {
   id?: true
-  deputyId?: true
+  code?: true
   title?: true
-  url?: true
-  section?: true
-  publishedAt?: true
-  authors?: true
   lead?: true
-  hasPicture?: true
-  source?: true
+  friendlyUri?: true
+  link?: true
+  publishedDate?: true
+  lastModifiedDate?: true
+  mainCategory?: true
+  articleType?: true
+  exclusive?: true
+  authors?: true
+  pictureUrl?: true
+  pictureCaption?: true
+  pictureCredits?: true
+  domain?: true
+  uuid?: true
   createdAt?: true
-  updatedAt?: true
 }
 
 export type ArticleCountAggregateInputType = {
   id?: true
-  deputyId?: true
+  code?: true
   title?: true
-  url?: true
-  section?: true
-  publishedAt?: true
-  authors?: true
   lead?: true
-  hasPicture?: true
-  source?: true
+  friendlyUri?: true
+  link?: true
+  publishedDate?: true
+  lastModifiedDate?: true
+  mainCategory?: true
+  articleType?: true
+  exclusive?: true
+  authors?: true
+  pictureUrl?: true
+  pictureCaption?: true
+  pictureCredits?: true
+  domain?: true
+  uuid?: true
   createdAt?: true
-  updatedAt?: true
   _all?: true
 }
 
@@ -227,17 +263,23 @@ export type ArticleGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type ArticleGroupByOutputType = {
   id: number
-  deputyId: number
+  code: string | null
   title: string
-  url: string
-  section: string | null
-  publishedAt: Date | null
-  authors: string | null
   lead: string | null
-  hasPicture: boolean
-  source: string | null
+  friendlyUri: string | null
+  link: string
+  publishedDate: string | null
+  lastModifiedDate: string | null
+  mainCategory: string | null
+  articleType: string | null
+  exclusive: number
+  authors: string | null
+  pictureUrl: string | null
+  pictureCaption: string | null
+  pictureCredits: string | null
+  domain: string | null
+  uuid: string | null
   createdAt: Date
-  updatedAt: Date
   _count: ArticleCountAggregateOutputType | null
   _avg: ArticleAvgAggregateOutputType | null
   _sum: ArticleSumAggregateOutputType | null
@@ -265,69 +307,92 @@ export type ArticleWhereInput = {
   OR?: Prisma.ArticleWhereInput[]
   NOT?: Prisma.ArticleWhereInput | Prisma.ArticleWhereInput[]
   id?: Prisma.IntFilter<"Article"> | number
-  deputyId?: Prisma.IntFilter<"Article"> | number
+  code?: Prisma.StringNullableFilter<"Article"> | string | null
   title?: Prisma.StringFilter<"Article"> | string
-  url?: Prisma.StringFilter<"Article"> | string
-  section?: Prisma.StringNullableFilter<"Article"> | string | null
-  publishedAt?: Prisma.DateTimeNullableFilter<"Article"> | Date | string | null
-  authors?: Prisma.StringNullableFilter<"Article"> | string | null
   lead?: Prisma.StringNullableFilter<"Article"> | string | null
-  hasPicture?: Prisma.BoolFilter<"Article"> | boolean
-  source?: Prisma.StringNullableFilter<"Article"> | string | null
+  friendlyUri?: Prisma.StringNullableFilter<"Article"> | string | null
+  link?: Prisma.StringFilter<"Article"> | string
+  publishedDate?: Prisma.StringNullableFilter<"Article"> | string | null
+  lastModifiedDate?: Prisma.StringNullableFilter<"Article"> | string | null
+  mainCategory?: Prisma.StringNullableFilter<"Article"> | string | null
+  articleType?: Prisma.StringNullableFilter<"Article"> | string | null
+  exclusive?: Prisma.IntFilter<"Article"> | number
+  authors?: Prisma.StringNullableFilter<"Article"> | string | null
+  pictureUrl?: Prisma.StringNullableFilter<"Article"> | string | null
+  pictureCaption?: Prisma.StringNullableFilter<"Article"> | string | null
+  pictureCredits?: Prisma.StringNullableFilter<"Article"> | string | null
+  domain?: Prisma.StringNullableFilter<"Article"> | string | null
+  uuid?: Prisma.StringNullableFilter<"Article"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Article"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Article"> | Date | string
-  deputy?: Prisma.XOR<Prisma.DeputyScalarRelationFilter, Prisma.DeputyWhereInput>
+  mpMatches?: Prisma.ArticleMpMatchListRelationFilter
 }
 
 export type ArticleOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  deputyId?: Prisma.SortOrder
+  code?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
-  url?: Prisma.SortOrder
-  section?: Prisma.SortOrderInput | Prisma.SortOrder
-  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  authors?: Prisma.SortOrderInput | Prisma.SortOrder
   lead?: Prisma.SortOrderInput | Prisma.SortOrder
-  hasPicture?: Prisma.SortOrder
-  source?: Prisma.SortOrderInput | Prisma.SortOrder
+  friendlyUri?: Prisma.SortOrderInput | Prisma.SortOrder
+  link?: Prisma.SortOrder
+  publishedDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastModifiedDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  mainCategory?: Prisma.SortOrderInput | Prisma.SortOrder
+  articleType?: Prisma.SortOrderInput | Prisma.SortOrder
+  exclusive?: Prisma.SortOrder
+  authors?: Prisma.SortOrderInput | Prisma.SortOrder
+  pictureUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  pictureCaption?: Prisma.SortOrderInput | Prisma.SortOrder
+  pictureCredits?: Prisma.SortOrderInput | Prisma.SortOrder
+  domain?: Prisma.SortOrderInput | Prisma.SortOrder
+  uuid?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
-  deputy?: Prisma.DeputyOrderByWithRelationInput
+  mpMatches?: Prisma.ArticleMpMatchOrderByRelationAggregateInput
 }
 
 export type ArticleWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  deputyId_url?: Prisma.ArticleDeputyIdUrlCompoundUniqueInput
+  code?: string
   AND?: Prisma.ArticleWhereInput | Prisma.ArticleWhereInput[]
   OR?: Prisma.ArticleWhereInput[]
   NOT?: Prisma.ArticleWhereInput | Prisma.ArticleWhereInput[]
-  deputyId?: Prisma.IntFilter<"Article"> | number
   title?: Prisma.StringFilter<"Article"> | string
-  url?: Prisma.StringFilter<"Article"> | string
-  section?: Prisma.StringNullableFilter<"Article"> | string | null
-  publishedAt?: Prisma.DateTimeNullableFilter<"Article"> | Date | string | null
-  authors?: Prisma.StringNullableFilter<"Article"> | string | null
   lead?: Prisma.StringNullableFilter<"Article"> | string | null
-  hasPicture?: Prisma.BoolFilter<"Article"> | boolean
-  source?: Prisma.StringNullableFilter<"Article"> | string | null
+  friendlyUri?: Prisma.StringNullableFilter<"Article"> | string | null
+  link?: Prisma.StringFilter<"Article"> | string
+  publishedDate?: Prisma.StringNullableFilter<"Article"> | string | null
+  lastModifiedDate?: Prisma.StringNullableFilter<"Article"> | string | null
+  mainCategory?: Prisma.StringNullableFilter<"Article"> | string | null
+  articleType?: Prisma.StringNullableFilter<"Article"> | string | null
+  exclusive?: Prisma.IntFilter<"Article"> | number
+  authors?: Prisma.StringNullableFilter<"Article"> | string | null
+  pictureUrl?: Prisma.StringNullableFilter<"Article"> | string | null
+  pictureCaption?: Prisma.StringNullableFilter<"Article"> | string | null
+  pictureCredits?: Prisma.StringNullableFilter<"Article"> | string | null
+  domain?: Prisma.StringNullableFilter<"Article"> | string | null
+  uuid?: Prisma.StringNullableFilter<"Article"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Article"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Article"> | Date | string
-  deputy?: Prisma.XOR<Prisma.DeputyScalarRelationFilter, Prisma.DeputyWhereInput>
-}, "id" | "deputyId_url">
+  mpMatches?: Prisma.ArticleMpMatchListRelationFilter
+}, "id" | "code">
 
 export type ArticleOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  deputyId?: Prisma.SortOrder
+  code?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
-  url?: Prisma.SortOrder
-  section?: Prisma.SortOrderInput | Prisma.SortOrder
-  publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  authors?: Prisma.SortOrderInput | Prisma.SortOrder
   lead?: Prisma.SortOrderInput | Prisma.SortOrder
-  hasPicture?: Prisma.SortOrder
-  source?: Prisma.SortOrderInput | Prisma.SortOrder
+  friendlyUri?: Prisma.SortOrderInput | Prisma.SortOrder
+  link?: Prisma.SortOrder
+  publishedDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastModifiedDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  mainCategory?: Prisma.SortOrderInput | Prisma.SortOrder
+  articleType?: Prisma.SortOrderInput | Prisma.SortOrder
+  exclusive?: Prisma.SortOrder
+  authors?: Prisma.SortOrderInput | Prisma.SortOrder
+  pictureUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  pictureCaption?: Prisma.SortOrderInput | Prisma.SortOrder
+  pictureCredits?: Prisma.SortOrderInput | Prisma.SortOrder
+  domain?: Prisma.SortOrderInput | Prisma.SortOrder
+  uuid?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
   _count?: Prisma.ArticleCountOrderByAggregateInput
   _avg?: Prisma.ArticleAvgOrderByAggregateInput
   _max?: Prisma.ArticleMaxOrderByAggregateInput
@@ -340,456 +405,512 @@ export type ArticleScalarWhereWithAggregatesInput = {
   OR?: Prisma.ArticleScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ArticleScalarWhereWithAggregatesInput | Prisma.ArticleScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Article"> | number
-  deputyId?: Prisma.IntWithAggregatesFilter<"Article"> | number
+  code?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
   title?: Prisma.StringWithAggregatesFilter<"Article"> | string
-  url?: Prisma.StringWithAggregatesFilter<"Article"> | string
-  section?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
-  publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Article"> | Date | string | null
-  authors?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
   lead?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
-  hasPicture?: Prisma.BoolWithAggregatesFilter<"Article"> | boolean
-  source?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  friendlyUri?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  link?: Prisma.StringWithAggregatesFilter<"Article"> | string
+  publishedDate?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  lastModifiedDate?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  mainCategory?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  articleType?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  exclusive?: Prisma.IntWithAggregatesFilter<"Article"> | number
+  authors?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  pictureUrl?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  pictureCaption?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  pictureCredits?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  domain?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
+  uuid?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Article"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Article"> | Date | string
 }
 
 export type ArticleCreateInput = {
+  code?: string | null
   title: string
-  url: string
-  section?: string | null
-  publishedAt?: Date | string | null
-  authors?: string | null
   lead?: string | null
-  hasPicture?: boolean
-  source?: string | null
+  friendlyUri?: string | null
+  link: string
+  publishedDate?: string | null
+  lastModifiedDate?: string | null
+  mainCategory?: string | null
+  articleType?: string | null
+  exclusive?: number
+  authors?: string | null
+  pictureUrl?: string | null
+  pictureCaption?: string | null
+  pictureCredits?: string | null
+  domain?: string | null
+  uuid?: string | null
   createdAt?: Date | string
-  updatedAt?: Date | string
-  deputy: Prisma.DeputyCreateNestedOneWithoutArticlesInput
+  mpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutArticleInput
 }
 
 export type ArticleUncheckedCreateInput = {
   id?: number
-  deputyId: number
+  code?: string | null
   title: string
-  url: string
-  section?: string | null
-  publishedAt?: Date | string | null
-  authors?: string | null
   lead?: string | null
-  hasPicture?: boolean
-  source?: string | null
+  friendlyUri?: string | null
+  link: string
+  publishedDate?: string | null
+  lastModifiedDate?: string | null
+  mainCategory?: string | null
+  articleType?: string | null
+  exclusive?: number
+  authors?: string | null
+  pictureUrl?: string | null
+  pictureCaption?: string | null
+  pictureCredits?: string | null
+  domain?: string | null
+  uuid?: string | null
   createdAt?: Date | string
-  updatedAt?: Date | string
+  mpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutArticleInput
 }
 
 export type ArticleUpdateInput = {
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lead?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  hasPicture?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  friendlyUri?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  link?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastModifiedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  articleType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exclusive?: Prisma.IntFieldUpdateOperationsInput | number
+  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCaption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCredits?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uuid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deputy?: Prisma.DeputyUpdateOneRequiredWithoutArticlesNestedInput
+  mpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutArticleNestedInput
 }
 
 export type ArticleUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  deputyId?: Prisma.IntFieldUpdateOperationsInput | number
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lead?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  hasPicture?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  friendlyUri?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  link?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastModifiedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  articleType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exclusive?: Prisma.IntFieldUpdateOperationsInput | number
+  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCaption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCredits?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uuid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutArticleNestedInput
 }
 
 export type ArticleCreateManyInput = {
   id?: number
-  deputyId: number
+  code?: string | null
   title: string
-  url: string
-  section?: string | null
-  publishedAt?: Date | string | null
-  authors?: string | null
   lead?: string | null
-  hasPicture?: boolean
-  source?: string | null
+  friendlyUri?: string | null
+  link: string
+  publishedDate?: string | null
+  lastModifiedDate?: string | null
+  mainCategory?: string | null
+  articleType?: string | null
+  exclusive?: number
+  authors?: string | null
+  pictureUrl?: string | null
+  pictureCaption?: string | null
+  pictureCredits?: string | null
+  domain?: string | null
+  uuid?: string | null
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
 export type ArticleUpdateManyMutationInput = {
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lead?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  hasPicture?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  friendlyUri?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  link?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastModifiedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  articleType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exclusive?: Prisma.IntFieldUpdateOperationsInput | number
+  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCaption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCredits?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uuid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ArticleUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  deputyId?: Prisma.IntFieldUpdateOperationsInput | number
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lead?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  hasPicture?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  friendlyUri?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  link?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastModifiedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  articleType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exclusive?: Prisma.IntFieldUpdateOperationsInput | number
+  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCaption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCredits?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uuid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type ArticleListRelationFilter = {
-  every?: Prisma.ArticleWhereInput
-  some?: Prisma.ArticleWhereInput
-  none?: Prisma.ArticleWhereInput
-}
-
-export type ArticleOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
-export type ArticleDeputyIdUrlCompoundUniqueInput = {
-  deputyId: number
-  url: string
 }
 
 export type ArticleCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  deputyId?: Prisma.SortOrder
+  code?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  url?: Prisma.SortOrder
-  section?: Prisma.SortOrder
-  publishedAt?: Prisma.SortOrder
-  authors?: Prisma.SortOrder
   lead?: Prisma.SortOrder
-  hasPicture?: Prisma.SortOrder
-  source?: Prisma.SortOrder
+  friendlyUri?: Prisma.SortOrder
+  link?: Prisma.SortOrder
+  publishedDate?: Prisma.SortOrder
+  lastModifiedDate?: Prisma.SortOrder
+  mainCategory?: Prisma.SortOrder
+  articleType?: Prisma.SortOrder
+  exclusive?: Prisma.SortOrder
+  authors?: Prisma.SortOrder
+  pictureUrl?: Prisma.SortOrder
+  pictureCaption?: Prisma.SortOrder
+  pictureCredits?: Prisma.SortOrder
+  domain?: Prisma.SortOrder
+  uuid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type ArticleAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  deputyId?: Prisma.SortOrder
+  exclusive?: Prisma.SortOrder
 }
 
 export type ArticleMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  deputyId?: Prisma.SortOrder
+  code?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  url?: Prisma.SortOrder
-  section?: Prisma.SortOrder
-  publishedAt?: Prisma.SortOrder
-  authors?: Prisma.SortOrder
   lead?: Prisma.SortOrder
-  hasPicture?: Prisma.SortOrder
-  source?: Prisma.SortOrder
+  friendlyUri?: Prisma.SortOrder
+  link?: Prisma.SortOrder
+  publishedDate?: Prisma.SortOrder
+  lastModifiedDate?: Prisma.SortOrder
+  mainCategory?: Prisma.SortOrder
+  articleType?: Prisma.SortOrder
+  exclusive?: Prisma.SortOrder
+  authors?: Prisma.SortOrder
+  pictureUrl?: Prisma.SortOrder
+  pictureCaption?: Prisma.SortOrder
+  pictureCredits?: Prisma.SortOrder
+  domain?: Prisma.SortOrder
+  uuid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type ArticleMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  deputyId?: Prisma.SortOrder
+  code?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  url?: Prisma.SortOrder
-  section?: Prisma.SortOrder
-  publishedAt?: Prisma.SortOrder
-  authors?: Prisma.SortOrder
   lead?: Prisma.SortOrder
-  hasPicture?: Prisma.SortOrder
-  source?: Prisma.SortOrder
+  friendlyUri?: Prisma.SortOrder
+  link?: Prisma.SortOrder
+  publishedDate?: Prisma.SortOrder
+  lastModifiedDate?: Prisma.SortOrder
+  mainCategory?: Prisma.SortOrder
+  articleType?: Prisma.SortOrder
+  exclusive?: Prisma.SortOrder
+  authors?: Prisma.SortOrder
+  pictureUrl?: Prisma.SortOrder
+  pictureCaption?: Prisma.SortOrder
+  pictureCredits?: Prisma.SortOrder
+  domain?: Prisma.SortOrder
+  uuid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
 }
 
 export type ArticleSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  deputyId?: Prisma.SortOrder
+  exclusive?: Prisma.SortOrder
 }
 
-export type ArticleCreateNestedManyWithoutDeputyInput = {
-  create?: Prisma.XOR<Prisma.ArticleCreateWithoutDeputyInput, Prisma.ArticleUncheckedCreateWithoutDeputyInput> | Prisma.ArticleCreateWithoutDeputyInput[] | Prisma.ArticleUncheckedCreateWithoutDeputyInput[]
-  connectOrCreate?: Prisma.ArticleCreateOrConnectWithoutDeputyInput | Prisma.ArticleCreateOrConnectWithoutDeputyInput[]
-  createMany?: Prisma.ArticleCreateManyDeputyInputEnvelope
-  connect?: Prisma.ArticleWhereUniqueInput | Prisma.ArticleWhereUniqueInput[]
+export type ArticleScalarRelationFilter = {
+  is?: Prisma.ArticleWhereInput
+  isNot?: Prisma.ArticleWhereInput
 }
 
-export type ArticleUncheckedCreateNestedManyWithoutDeputyInput = {
-  create?: Prisma.XOR<Prisma.ArticleCreateWithoutDeputyInput, Prisma.ArticleUncheckedCreateWithoutDeputyInput> | Prisma.ArticleCreateWithoutDeputyInput[] | Prisma.ArticleUncheckedCreateWithoutDeputyInput[]
-  connectOrCreate?: Prisma.ArticleCreateOrConnectWithoutDeputyInput | Prisma.ArticleCreateOrConnectWithoutDeputyInput[]
-  createMany?: Prisma.ArticleCreateManyDeputyInputEnvelope
-  connect?: Prisma.ArticleWhereUniqueInput | Prisma.ArticleWhereUniqueInput[]
+export type ArticleCreateNestedOneWithoutMpMatchesInput = {
+  create?: Prisma.XOR<Prisma.ArticleCreateWithoutMpMatchesInput, Prisma.ArticleUncheckedCreateWithoutMpMatchesInput>
+  connectOrCreate?: Prisma.ArticleCreateOrConnectWithoutMpMatchesInput
+  connect?: Prisma.ArticleWhereUniqueInput
 }
 
-export type ArticleUpdateManyWithoutDeputyNestedInput = {
-  create?: Prisma.XOR<Prisma.ArticleCreateWithoutDeputyInput, Prisma.ArticleUncheckedCreateWithoutDeputyInput> | Prisma.ArticleCreateWithoutDeputyInput[] | Prisma.ArticleUncheckedCreateWithoutDeputyInput[]
-  connectOrCreate?: Prisma.ArticleCreateOrConnectWithoutDeputyInput | Prisma.ArticleCreateOrConnectWithoutDeputyInput[]
-  upsert?: Prisma.ArticleUpsertWithWhereUniqueWithoutDeputyInput | Prisma.ArticleUpsertWithWhereUniqueWithoutDeputyInput[]
-  createMany?: Prisma.ArticleCreateManyDeputyInputEnvelope
-  set?: Prisma.ArticleWhereUniqueInput | Prisma.ArticleWhereUniqueInput[]
-  disconnect?: Prisma.ArticleWhereUniqueInput | Prisma.ArticleWhereUniqueInput[]
-  delete?: Prisma.ArticleWhereUniqueInput | Prisma.ArticleWhereUniqueInput[]
-  connect?: Prisma.ArticleWhereUniqueInput | Prisma.ArticleWhereUniqueInput[]
-  update?: Prisma.ArticleUpdateWithWhereUniqueWithoutDeputyInput | Prisma.ArticleUpdateWithWhereUniqueWithoutDeputyInput[]
-  updateMany?: Prisma.ArticleUpdateManyWithWhereWithoutDeputyInput | Prisma.ArticleUpdateManyWithWhereWithoutDeputyInput[]
-  deleteMany?: Prisma.ArticleScalarWhereInput | Prisma.ArticleScalarWhereInput[]
+export type ArticleUpdateOneRequiredWithoutMpMatchesNestedInput = {
+  create?: Prisma.XOR<Prisma.ArticleCreateWithoutMpMatchesInput, Prisma.ArticleUncheckedCreateWithoutMpMatchesInput>
+  connectOrCreate?: Prisma.ArticleCreateOrConnectWithoutMpMatchesInput
+  upsert?: Prisma.ArticleUpsertWithoutMpMatchesInput
+  connect?: Prisma.ArticleWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ArticleUpdateToOneWithWhereWithoutMpMatchesInput, Prisma.ArticleUpdateWithoutMpMatchesInput>, Prisma.ArticleUncheckedUpdateWithoutMpMatchesInput>
 }
 
-export type ArticleUncheckedUpdateManyWithoutDeputyNestedInput = {
-  create?: Prisma.XOR<Prisma.ArticleCreateWithoutDeputyInput, Prisma.ArticleUncheckedCreateWithoutDeputyInput> | Prisma.ArticleCreateWithoutDeputyInput[] | Prisma.ArticleUncheckedCreateWithoutDeputyInput[]
-  connectOrCreate?: Prisma.ArticleCreateOrConnectWithoutDeputyInput | Prisma.ArticleCreateOrConnectWithoutDeputyInput[]
-  upsert?: Prisma.ArticleUpsertWithWhereUniqueWithoutDeputyInput | Prisma.ArticleUpsertWithWhereUniqueWithoutDeputyInput[]
-  createMany?: Prisma.ArticleCreateManyDeputyInputEnvelope
-  set?: Prisma.ArticleWhereUniqueInput | Prisma.ArticleWhereUniqueInput[]
-  disconnect?: Prisma.ArticleWhereUniqueInput | Prisma.ArticleWhereUniqueInput[]
-  delete?: Prisma.ArticleWhereUniqueInput | Prisma.ArticleWhereUniqueInput[]
-  connect?: Prisma.ArticleWhereUniqueInput | Prisma.ArticleWhereUniqueInput[]
-  update?: Prisma.ArticleUpdateWithWhereUniqueWithoutDeputyInput | Prisma.ArticleUpdateWithWhereUniqueWithoutDeputyInput[]
-  updateMany?: Prisma.ArticleUpdateManyWithWhereWithoutDeputyInput | Prisma.ArticleUpdateManyWithWhereWithoutDeputyInput[]
-  deleteMany?: Prisma.ArticleScalarWhereInput | Prisma.ArticleScalarWhereInput[]
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
-export type ArticleCreateWithoutDeputyInput = {
+export type ArticleCreateWithoutMpMatchesInput = {
+  code?: string | null
   title: string
-  url: string
-  section?: string | null
-  publishedAt?: Date | string | null
-  authors?: string | null
   lead?: string | null
-  hasPicture?: boolean
-  source?: string | null
+  friendlyUri?: string | null
+  link: string
+  publishedDate?: string | null
+  lastModifiedDate?: string | null
+  mainCategory?: string | null
+  articleType?: string | null
+  exclusive?: number
+  authors?: string | null
+  pictureUrl?: string | null
+  pictureCaption?: string | null
+  pictureCredits?: string | null
+  domain?: string | null
+  uuid?: string | null
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
-export type ArticleUncheckedCreateWithoutDeputyInput = {
+export type ArticleUncheckedCreateWithoutMpMatchesInput = {
   id?: number
+  code?: string | null
   title: string
-  url: string
-  section?: string | null
-  publishedAt?: Date | string | null
-  authors?: string | null
   lead?: string | null
-  hasPicture?: boolean
-  source?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type ArticleCreateOrConnectWithoutDeputyInput = {
-  where: Prisma.ArticleWhereUniqueInput
-  create: Prisma.XOR<Prisma.ArticleCreateWithoutDeputyInput, Prisma.ArticleUncheckedCreateWithoutDeputyInput>
-}
-
-export type ArticleCreateManyDeputyInputEnvelope = {
-  data: Prisma.ArticleCreateManyDeputyInput | Prisma.ArticleCreateManyDeputyInput[]
-  skipDuplicates?: boolean
-}
-
-export type ArticleUpsertWithWhereUniqueWithoutDeputyInput = {
-  where: Prisma.ArticleWhereUniqueInput
-  update: Prisma.XOR<Prisma.ArticleUpdateWithoutDeputyInput, Prisma.ArticleUncheckedUpdateWithoutDeputyInput>
-  create: Prisma.XOR<Prisma.ArticleCreateWithoutDeputyInput, Prisma.ArticleUncheckedCreateWithoutDeputyInput>
-}
-
-export type ArticleUpdateWithWhereUniqueWithoutDeputyInput = {
-  where: Prisma.ArticleWhereUniqueInput
-  data: Prisma.XOR<Prisma.ArticleUpdateWithoutDeputyInput, Prisma.ArticleUncheckedUpdateWithoutDeputyInput>
-}
-
-export type ArticleUpdateManyWithWhereWithoutDeputyInput = {
-  where: Prisma.ArticleScalarWhereInput
-  data: Prisma.XOR<Prisma.ArticleUpdateManyMutationInput, Prisma.ArticleUncheckedUpdateManyWithoutDeputyInput>
-}
-
-export type ArticleScalarWhereInput = {
-  AND?: Prisma.ArticleScalarWhereInput | Prisma.ArticleScalarWhereInput[]
-  OR?: Prisma.ArticleScalarWhereInput[]
-  NOT?: Prisma.ArticleScalarWhereInput | Prisma.ArticleScalarWhereInput[]
-  id?: Prisma.IntFilter<"Article"> | number
-  deputyId?: Prisma.IntFilter<"Article"> | number
-  title?: Prisma.StringFilter<"Article"> | string
-  url?: Prisma.StringFilter<"Article"> | string
-  section?: Prisma.StringNullableFilter<"Article"> | string | null
-  publishedAt?: Prisma.DateTimeNullableFilter<"Article"> | Date | string | null
-  authors?: Prisma.StringNullableFilter<"Article"> | string | null
-  lead?: Prisma.StringNullableFilter<"Article"> | string | null
-  hasPicture?: Prisma.BoolFilter<"Article"> | boolean
-  source?: Prisma.StringNullableFilter<"Article"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Article"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Article"> | Date | string
-}
-
-export type ArticleCreateManyDeputyInput = {
-  id?: number
-  title: string
-  url: string
-  section?: string | null
-  publishedAt?: Date | string | null
+  friendlyUri?: string | null
+  link: string
+  publishedDate?: string | null
+  lastModifiedDate?: string | null
+  mainCategory?: string | null
+  articleType?: string | null
+  exclusive?: number
   authors?: string | null
-  lead?: string | null
-  hasPicture?: boolean
-  source?: string | null
+  pictureUrl?: string | null
+  pictureCaption?: string | null
+  pictureCredits?: string | null
+  domain?: string | null
+  uuid?: string | null
   createdAt?: Date | string
-  updatedAt?: Date | string
 }
 
-export type ArticleUpdateWithoutDeputyInput = {
+export type ArticleCreateOrConnectWithoutMpMatchesInput = {
+  where: Prisma.ArticleWhereUniqueInput
+  create: Prisma.XOR<Prisma.ArticleCreateWithoutMpMatchesInput, Prisma.ArticleUncheckedCreateWithoutMpMatchesInput>
+}
+
+export type ArticleUpsertWithoutMpMatchesInput = {
+  update: Prisma.XOR<Prisma.ArticleUpdateWithoutMpMatchesInput, Prisma.ArticleUncheckedUpdateWithoutMpMatchesInput>
+  create: Prisma.XOR<Prisma.ArticleCreateWithoutMpMatchesInput, Prisma.ArticleUncheckedCreateWithoutMpMatchesInput>
+  where?: Prisma.ArticleWhereInput
+}
+
+export type ArticleUpdateToOneWithWhereWithoutMpMatchesInput = {
+  where?: Prisma.ArticleWhereInput
+  data: Prisma.XOR<Prisma.ArticleUpdateWithoutMpMatchesInput, Prisma.ArticleUncheckedUpdateWithoutMpMatchesInput>
+}
+
+export type ArticleUpdateWithoutMpMatchesInput = {
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lead?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  hasPicture?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  friendlyUri?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  link?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastModifiedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  articleType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exclusive?: Prisma.IntFieldUpdateOperationsInput | number
+  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCaption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCredits?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uuid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ArticleUncheckedUpdateWithoutDeputyInput = {
+export type ArticleUncheckedUpdateWithoutMpMatchesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lead?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  hasPicture?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  friendlyUri?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  link?: Prisma.StringFieldUpdateOperationsInput | string
+  publishedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastModifiedDate?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainCategory?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  articleType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exclusive?: Prisma.IntFieldUpdateOperationsInput | number
+  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCaption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pictureCredits?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uuid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ArticleUncheckedUpdateManyWithoutDeputyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  authors?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lead?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  hasPicture?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+
+/**
+ * Count Type ArticleCountOutputType
+ */
+
+export type ArticleCountOutputType = {
+  mpMatches: number
 }
 
+export type ArticleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  mpMatches?: boolean | ArticleCountOutputTypeCountMpMatchesArgs
+}
+
+/**
+ * ArticleCountOutputType without action
+ */
+export type ArticleCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ArticleCountOutputType
+   */
+  select?: Prisma.ArticleCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ArticleCountOutputType without action
+ */
+export type ArticleCountOutputTypeCountMpMatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ArticleMpMatchWhereInput
+}
 
 
 export type ArticleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  deputyId?: boolean
+  code?: boolean
   title?: boolean
-  url?: boolean
-  section?: boolean
-  publishedAt?: boolean
-  authors?: boolean
   lead?: boolean
-  hasPicture?: boolean
-  source?: boolean
+  friendlyUri?: boolean
+  link?: boolean
+  publishedDate?: boolean
+  lastModifiedDate?: boolean
+  mainCategory?: boolean
+  articleType?: boolean
+  exclusive?: boolean
+  authors?: boolean
+  pictureUrl?: boolean
+  pictureCaption?: boolean
+  pictureCredits?: boolean
+  domain?: boolean
+  uuid?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
-  deputy?: boolean | Prisma.DeputyDefaultArgs<ExtArgs>
+  mpMatches?: boolean | Prisma.Article$mpMatchesArgs<ExtArgs>
+  _count?: boolean | Prisma.ArticleCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["article"]>
 
 export type ArticleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  deputyId?: boolean
+  code?: boolean
   title?: boolean
-  url?: boolean
-  section?: boolean
-  publishedAt?: boolean
-  authors?: boolean
   lead?: boolean
-  hasPicture?: boolean
-  source?: boolean
+  friendlyUri?: boolean
+  link?: boolean
+  publishedDate?: boolean
+  lastModifiedDate?: boolean
+  mainCategory?: boolean
+  articleType?: boolean
+  exclusive?: boolean
+  authors?: boolean
+  pictureUrl?: boolean
+  pictureCaption?: boolean
+  pictureCredits?: boolean
+  domain?: boolean
+  uuid?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
-  deputy?: boolean | Prisma.DeputyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["article"]>
 
 export type ArticleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  deputyId?: boolean
+  code?: boolean
   title?: boolean
-  url?: boolean
-  section?: boolean
-  publishedAt?: boolean
-  authors?: boolean
   lead?: boolean
-  hasPicture?: boolean
-  source?: boolean
+  friendlyUri?: boolean
+  link?: boolean
+  publishedDate?: boolean
+  lastModifiedDate?: boolean
+  mainCategory?: boolean
+  articleType?: boolean
+  exclusive?: boolean
+  authors?: boolean
+  pictureUrl?: boolean
+  pictureCaption?: boolean
+  pictureCredits?: boolean
+  domain?: boolean
+  uuid?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
-  deputy?: boolean | Prisma.DeputyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["article"]>
 
 export type ArticleSelectScalar = {
   id?: boolean
-  deputyId?: boolean
+  code?: boolean
   title?: boolean
-  url?: boolean
-  section?: boolean
-  publishedAt?: boolean
-  authors?: boolean
   lead?: boolean
-  hasPicture?: boolean
-  source?: boolean
+  friendlyUri?: boolean
+  link?: boolean
+  publishedDate?: boolean
+  lastModifiedDate?: boolean
+  mainCategory?: boolean
+  articleType?: boolean
+  exclusive?: boolean
+  authors?: boolean
+  pictureUrl?: boolean
+  pictureCaption?: boolean
+  pictureCredits?: boolean
+  domain?: boolean
+  uuid?: boolean
   createdAt?: boolean
-  updatedAt?: boolean
 }
 
-export type ArticleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deputyId" | "title" | "url" | "section" | "publishedAt" | "authors" | "lead" | "hasPicture" | "source" | "createdAt" | "updatedAt", ExtArgs["result"]["article"]>
+export type ArticleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "title" | "lead" | "friendlyUri" | "link" | "publishedDate" | "lastModifiedDate" | "mainCategory" | "articleType" | "exclusive" | "authors" | "pictureUrl" | "pictureCaption" | "pictureCredits" | "domain" | "uuid" | "createdAt", ExtArgs["result"]["article"]>
 export type ArticleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  deputy?: boolean | Prisma.DeputyDefaultArgs<ExtArgs>
+  mpMatches?: boolean | Prisma.Article$mpMatchesArgs<ExtArgs>
+  _count?: boolean | Prisma.ArticleCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ArticleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  deputy?: boolean | Prisma.DeputyDefaultArgs<ExtArgs>
-}
-export type ArticleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  deputy?: boolean | Prisma.DeputyDefaultArgs<ExtArgs>
-}
+export type ArticleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ArticleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $ArticlePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Article"
   objects: {
-    deputy: Prisma.$DeputyPayload<ExtArgs>
+    mpMatches: Prisma.$ArticleMpMatchPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    deputyId: number
+    code: string | null
     title: string
-    url: string
-    section: string | null
-    publishedAt: Date | null
-    authors: string | null
     lead: string | null
-    hasPicture: boolean
-    source: string | null
+    friendlyUri: string | null
+    link: string
+    publishedDate: string | null
+    lastModifiedDate: string | null
+    mainCategory: string | null
+    articleType: string | null
+    exclusive: number
+    authors: string | null
+    pictureUrl: string | null
+    pictureCaption: string | null
+    pictureCredits: string | null
+    domain: string | null
+    uuid: string | null
     createdAt: Date
-    updatedAt: Date
   }, ExtArgs["result"]["article"]>
   composites: {}
 }
@@ -1184,7 +1305,7 @@ readonly fields: ArticleFieldRefs;
  */
 export interface Prisma__ArticleClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  deputy<T extends Prisma.DeputyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DeputyDefaultArgs<ExtArgs>>): Prisma.Prisma__DeputyClient<runtime.Types.Result.GetResult<Prisma.$DeputyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  mpMatches<T extends Prisma.Article$mpMatchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Article$mpMatchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticleMpMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1215,17 +1336,23 @@ export interface Prisma__ArticleClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface ArticleFieldRefs {
   readonly id: Prisma.FieldRef<"Article", 'Int'>
-  readonly deputyId: Prisma.FieldRef<"Article", 'Int'>
+  readonly code: Prisma.FieldRef<"Article", 'String'>
   readonly title: Prisma.FieldRef<"Article", 'String'>
-  readonly url: Prisma.FieldRef<"Article", 'String'>
-  readonly section: Prisma.FieldRef<"Article", 'String'>
-  readonly publishedAt: Prisma.FieldRef<"Article", 'DateTime'>
-  readonly authors: Prisma.FieldRef<"Article", 'String'>
   readonly lead: Prisma.FieldRef<"Article", 'String'>
-  readonly hasPicture: Prisma.FieldRef<"Article", 'Boolean'>
-  readonly source: Prisma.FieldRef<"Article", 'String'>
+  readonly friendlyUri: Prisma.FieldRef<"Article", 'String'>
+  readonly link: Prisma.FieldRef<"Article", 'String'>
+  readonly publishedDate: Prisma.FieldRef<"Article", 'String'>
+  readonly lastModifiedDate: Prisma.FieldRef<"Article", 'String'>
+  readonly mainCategory: Prisma.FieldRef<"Article", 'String'>
+  readonly articleType: Prisma.FieldRef<"Article", 'String'>
+  readonly exclusive: Prisma.FieldRef<"Article", 'Int'>
+  readonly authors: Prisma.FieldRef<"Article", 'String'>
+  readonly pictureUrl: Prisma.FieldRef<"Article", 'String'>
+  readonly pictureCaption: Prisma.FieldRef<"Article", 'String'>
+  readonly pictureCredits: Prisma.FieldRef<"Article", 'String'>
+  readonly domain: Prisma.FieldRef<"Article", 'String'>
+  readonly uuid: Prisma.FieldRef<"Article", 'String'>
   readonly createdAt: Prisma.FieldRef<"Article", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"Article", 'DateTime'>
 }
     
 
@@ -1480,10 +1607,6 @@ export type ArticleCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.ArticleCreateManyInput | Prisma.ArticleCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ArticleIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1554,10 +1677,6 @@ export type ArticleUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many Articles to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ArticleIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1624,6 +1743,30 @@ export type ArticleDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Articles to delete.
    */
   limit?: number
+}
+
+/**
+ * Article.mpMatches
+ */
+export type Article$mpMatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ArticleMpMatch
+   */
+  select?: Prisma.ArticleMpMatchSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ArticleMpMatch
+   */
+  omit?: Prisma.ArticleMpMatchOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ArticleMpMatchInclude<ExtArgs> | null
+  where?: Prisma.ArticleMpMatchWhereInput
+  orderBy?: Prisma.ArticleMpMatchOrderByWithRelationInput | Prisma.ArticleMpMatchOrderByWithRelationInput[]
+  cursor?: Prisma.ArticleMpMatchWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ArticleMpMatchScalarFieldEnum | Prisma.ArticleMpMatchScalarFieldEnum[]
 }
 
 /**

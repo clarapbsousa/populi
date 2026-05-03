@@ -41,7 +41,7 @@ model Deputy {
   relIniciativas         RelIniciativas[]
   relIniEuropeias        RelIniEuropeias[]
   relPeticoes            RelPeticoes[]
-  articles               Article[]
+  articleMpMatches       ArticleMpMatch[]
   factChecks             FactCheck[]
 
   createdAt         DateTime           @default(now()) @map("created_at")
@@ -482,25 +482,49 @@ model InitiativeVote {
 }
 
 model Article {
-  id            Int       @id @default(autoincrement())
-  deputyId      Int       @map("deputy_id")
-  title         String    @map("title")
-  url           String    @map("url")
-  section       String?   @map("section")
-  publishedAt   DateTime? @map("published_at")
-  authors       String?   @map("authors")
-  lead          String?   @map("lead")
-  hasPicture    Boolean   @default(false) @map("has_picture")
-  source        String?   @map("source")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
+  id                Int                @id @default(autoincrement())
+  code              String?            @unique @map("code")
+  title             String             @map("title")
+  lead              String?            @map("lead")
+  friendlyUri       String?            @map("friendly_uri")
+  link              String             @map("link")
+  publishedDate     String?            @map("published_date")
+  lastModifiedDate  String?            @map("last_modified_date")
+  mainCategory      String?            @map("main_category")
+  articleType       String?            @map("article_type")
+  exclusive         Int                @default(0) @map("exclusive")
+  authors           String?            @map("authors")
+  pictureUrl        String?            @map("picture_url")
+  pictureCaption    String?            @map("picture_caption")
+  pictureCredits    String?            @map("picture_credits")
+  domain            String?            @map("domain")
+  uuid              String?            @map("uuid")
+  createdAt         DateTime           @default(now()) @map("created_at")
 
-  deputy        Deputy    @relation(fields: [deputyId], references: [id], onDelete: Cascade)
+  mpMatches         ArticleMpMatch[]
 
-  @@unique([deputyId, url])
-  @@index([deputyId])
-  @@index([publishedAt])
+  @@index([publishedDate])
+  @@index([domain])
   @@map("articles")
+}
+
+model ArticleMpMatch {
+  id             Int      @id @default(autoincrement())
+  articleId      Int      @map("article_id")
+  mpId           Int      @map("mp_id")
+  mpName         String   @map("mp_name")
+  mpParty        String   @map("mp_party")
+  mentionCount   Int      @map("mention_count")
+  matchQuality   String   @map("match_quality")
+  articleSource  String   @map("article_source")
+
+  article        Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  deputy         Deputy   @relation(fields: [mpId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, mpId])
+  @@index([articleId])
+  @@index([mpId])
+  @@map("article_mp_matches")
 }
 
 model FactCheck {

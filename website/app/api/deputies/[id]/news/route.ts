@@ -27,15 +27,24 @@ export async function GET(
   );
   const skip = (page - 1) * limit;
 
-  const [articles, total] = await Promise.all([
-    prisma.article.findMany({
-      where: { deputyId },
-      orderBy: { publishedAt: "desc" },
+  const [matches, total] = await Promise.all([
+    prisma.articleMpMatch.findMany({
+      where: { mpId: deputyId },
+      orderBy: [{ mentionCount: "desc" }, { matchQuality: "asc" }],
       skip,
       take: limit,
+      include: {
+        article: true,
+      },
     }),
-    prisma.article.count({ where: { deputyId } }),
+    prisma.articleMpMatch.count({ where: { mpId: deputyId } }),
   ]);
+
+  const articles = matches.map((m) => ({
+    ...m.article,
+    matchQuality: m.matchQuality,
+    mentionCount: m.mentionCount,
+  }));
 
   return NextResponse.json({
     articles,

@@ -305,7 +305,7 @@ export type DeputyWhereInput = {
   relIniciativas?: Prisma.RelIniciativasListRelationFilter
   relIniEuropeias?: Prisma.RelIniEuropeiasListRelationFilter
   relPeticoes?: Prisma.RelPeticoesListRelationFilter
-  articles?: Prisma.ArticleListRelationFilter
+  articleMpMatches?: Prisma.ArticleMpMatchListRelationFilter
   factChecks?: Prisma.FactCheckListRelationFilter
 }
 
@@ -343,7 +343,7 @@ export type DeputyOrderByWithRelationInput = {
   relIniciativas?: Prisma.RelIniciativasOrderByRelationAggregateInput
   relIniEuropeias?: Prisma.RelIniEuropeiasOrderByRelationAggregateInput
   relPeticoes?: Prisma.RelPeticoesOrderByRelationAggregateInput
-  articles?: Prisma.ArticleOrderByRelationAggregateInput
+  articleMpMatches?: Prisma.ArticleMpMatchOrderByRelationAggregateInput
   factChecks?: Prisma.FactCheckOrderByRelationAggregateInput
 }
 
@@ -384,7 +384,7 @@ export type DeputyWhereUniqueInput = Prisma.AtLeast<{
   relIniciativas?: Prisma.RelIniciativasListRelationFilter
   relIniEuropeias?: Prisma.RelIniEuropeiasListRelationFilter
   relPeticoes?: Prisma.RelPeticoesListRelationFilter
-  articles?: Prisma.ArticleListRelationFilter
+  articleMpMatches?: Prisma.ArticleMpMatchListRelationFilter
   factChecks?: Prisma.FactCheckListRelationFilter
 }, "id" | "depId">
 
@@ -459,7 +459,7 @@ export type DeputyCreateInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -497,7 +497,7 @@ export type DeputyUncheckedCreateInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -534,7 +534,7 @@ export type DeputyUpdateInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -572,7 +572,7 @@ export type DeputyUncheckedUpdateInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1006,18 +1006,18 @@ export type DeputyUpdateOneRequiredWithoutRelPeticoesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DeputyUpdateToOneWithWhereWithoutRelPeticoesInput, Prisma.DeputyUpdateWithoutRelPeticoesInput>, Prisma.DeputyUncheckedUpdateWithoutRelPeticoesInput>
 }
 
-export type DeputyCreateNestedOneWithoutArticlesInput = {
-  create?: Prisma.XOR<Prisma.DeputyCreateWithoutArticlesInput, Prisma.DeputyUncheckedCreateWithoutArticlesInput>
-  connectOrCreate?: Prisma.DeputyCreateOrConnectWithoutArticlesInput
+export type DeputyCreateNestedOneWithoutArticleMpMatchesInput = {
+  create?: Prisma.XOR<Prisma.DeputyCreateWithoutArticleMpMatchesInput, Prisma.DeputyUncheckedCreateWithoutArticleMpMatchesInput>
+  connectOrCreate?: Prisma.DeputyCreateOrConnectWithoutArticleMpMatchesInput
   connect?: Prisma.DeputyWhereUniqueInput
 }
 
-export type DeputyUpdateOneRequiredWithoutArticlesNestedInput = {
-  create?: Prisma.XOR<Prisma.DeputyCreateWithoutArticlesInput, Prisma.DeputyUncheckedCreateWithoutArticlesInput>
-  connectOrCreate?: Prisma.DeputyCreateOrConnectWithoutArticlesInput
-  upsert?: Prisma.DeputyUpsertWithoutArticlesInput
+export type DeputyUpdateOneRequiredWithoutArticleMpMatchesNestedInput = {
+  create?: Prisma.XOR<Prisma.DeputyCreateWithoutArticleMpMatchesInput, Prisma.DeputyUncheckedCreateWithoutArticleMpMatchesInput>
+  connectOrCreate?: Prisma.DeputyCreateOrConnectWithoutArticleMpMatchesInput
+  upsert?: Prisma.DeputyUpsertWithoutArticleMpMatchesInput
   connect?: Prisma.DeputyWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.DeputyUpdateToOneWithWhereWithoutArticlesInput, Prisma.DeputyUpdateWithoutArticlesInput>, Prisma.DeputyUncheckedUpdateWithoutArticlesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DeputyUpdateToOneWithWhereWithoutArticleMpMatchesInput, Prisma.DeputyUpdateWithoutArticleMpMatchesInput>, Prisma.DeputyUncheckedUpdateWithoutArticleMpMatchesInput>
 }
 
 export type DeputyCreateNestedOneWithoutFactChecksInput = {
@@ -1066,7 +1066,7 @@ export type DeputyCreateWithoutPartyHistoryInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -1103,7 +1103,7 @@ export type DeputyUncheckedCreateWithoutPartyHistoryInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -1155,7 +1155,7 @@ export type DeputyUpdateWithoutPartyHistoryInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1192,7 +1192,7 @@ export type DeputyUncheckedUpdateWithoutPartyHistoryInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1228,7 +1228,7 @@ export type DeputyCreateWithoutStatusHistoryInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -1265,7 +1265,7 @@ export type DeputyUncheckedCreateWithoutStatusHistoryInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -1317,7 +1317,7 @@ export type DeputyUpdateWithoutStatusHistoryInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1354,7 +1354,7 @@ export type DeputyUncheckedUpdateWithoutStatusHistoryInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1390,7 +1390,7 @@ export type DeputyCreateWithoutDadosLegisInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -1427,7 +1427,7 @@ export type DeputyUncheckedCreateWithoutDadosLegisInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -1479,7 +1479,7 @@ export type DeputyUpdateWithoutDadosLegisInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1516,7 +1516,7 @@ export type DeputyUncheckedUpdateWithoutDadosLegisInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1552,7 +1552,7 @@ export type DeputyCreateWithoutActPInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -1589,7 +1589,7 @@ export type DeputyUncheckedCreateWithoutActPInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -1641,7 +1641,7 @@ export type DeputyUpdateWithoutActPInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1678,7 +1678,7 @@ export type DeputyUncheckedUpdateWithoutActPInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1714,7 +1714,7 @@ export type DeputyCreateWithoutAudicoesInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -1751,7 +1751,7 @@ export type DeputyUncheckedCreateWithoutAudicoesInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -1803,7 +1803,7 @@ export type DeputyUpdateWithoutAudicoesInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1840,7 +1840,7 @@ export type DeputyUncheckedUpdateWithoutAudicoesInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -1876,7 +1876,7 @@ export type DeputyCreateWithoutAudienciasInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -1913,7 +1913,7 @@ export type DeputyUncheckedCreateWithoutAudienciasInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -1965,7 +1965,7 @@ export type DeputyUpdateWithoutAudienciasInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2002,7 +2002,7 @@ export type DeputyUncheckedUpdateWithoutAudienciasInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2038,7 +2038,7 @@ export type DeputyCreateWithoutCmsInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -2075,7 +2075,7 @@ export type DeputyUncheckedCreateWithoutCmsInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -2127,7 +2127,7 @@ export type DeputyUpdateWithoutCmsInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2164,7 +2164,7 @@ export type DeputyUncheckedUpdateWithoutCmsInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2200,7 +2200,7 @@ export type DeputyCreateWithoutDeslocacoesInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -2237,7 +2237,7 @@ export type DeputyUncheckedCreateWithoutDeslocacoesInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -2289,7 +2289,7 @@ export type DeputyUpdateWithoutDeslocacoesInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2326,7 +2326,7 @@ export type DeputyUncheckedUpdateWithoutDeslocacoesInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2362,7 +2362,7 @@ export type DeputyCreateWithoutDleInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -2399,7 +2399,7 @@ export type DeputyUncheckedCreateWithoutDleInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -2451,7 +2451,7 @@ export type DeputyUpdateWithoutDleInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2488,7 +2488,7 @@ export type DeputyUncheckedUpdateWithoutDleInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2524,7 +2524,7 @@ export type DeputyCreateWithoutEventosInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -2561,7 +2561,7 @@ export type DeputyUncheckedCreateWithoutEventosInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -2613,7 +2613,7 @@ export type DeputyUpdateWithoutEventosInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2650,7 +2650,7 @@ export type DeputyUncheckedUpdateWithoutEventosInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2686,7 +2686,7 @@ export type DeputyCreateWithoutGpaInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -2723,7 +2723,7 @@ export type DeputyUncheckedCreateWithoutGpaInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -2775,7 +2775,7 @@ export type DeputyUpdateWithoutGpaInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2812,7 +2812,7 @@ export type DeputyUncheckedUpdateWithoutGpaInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2848,7 +2848,7 @@ export type DeputyCreateWithoutIniInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -2885,7 +2885,7 @@ export type DeputyUncheckedCreateWithoutIniInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -2937,7 +2937,7 @@ export type DeputyUpdateWithoutIniInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -2974,7 +2974,7 @@ export type DeputyUncheckedUpdateWithoutIniInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3010,7 +3010,7 @@ export type DeputyCreateWithoutIntevInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -3047,7 +3047,7 @@ export type DeputyUncheckedCreateWithoutIntevInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -3099,7 +3099,7 @@ export type DeputyUpdateWithoutIntevInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3136,7 +3136,7 @@ export type DeputyUncheckedUpdateWithoutIntevInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3172,7 +3172,7 @@ export type DeputyCreateWithoutParlamentoJovensInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -3209,7 +3209,7 @@ export type DeputyUncheckedCreateWithoutParlamentoJovensInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -3261,7 +3261,7 @@ export type DeputyUpdateWithoutParlamentoJovensInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3298,7 +3298,7 @@ export type DeputyUncheckedUpdateWithoutParlamentoJovensInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3334,7 +3334,7 @@ export type DeputyCreateWithoutReqInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -3371,7 +3371,7 @@ export type DeputyUncheckedCreateWithoutReqInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -3423,7 +3423,7 @@ export type DeputyUpdateWithoutReqInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3460,7 +3460,7 @@ export type DeputyUncheckedUpdateWithoutReqInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3496,7 +3496,7 @@ export type DeputyCreateWithoutScgtInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -3533,7 +3533,7 @@ export type DeputyUncheckedCreateWithoutScgtInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -3585,7 +3585,7 @@ export type DeputyUpdateWithoutScgtInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3622,7 +3622,7 @@ export type DeputyUncheckedUpdateWithoutScgtInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3658,7 +3658,7 @@ export type DeputyCreateWithoutRelAutoresPareceresInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -3695,7 +3695,7 @@ export type DeputyUncheckedCreateWithoutRelAutoresPareceresInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -3747,7 +3747,7 @@ export type DeputyUpdateWithoutRelAutoresPareceresInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3784,7 +3784,7 @@ export type DeputyUncheckedUpdateWithoutRelAutoresPareceresInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3820,7 +3820,7 @@ export type DeputyCreateWithoutRelContasPublicasInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -3857,7 +3857,7 @@ export type DeputyUncheckedCreateWithoutRelContasPublicasInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -3909,7 +3909,7 @@ export type DeputyUpdateWithoutRelContasPublicasInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3946,7 +3946,7 @@ export type DeputyUncheckedUpdateWithoutRelContasPublicasInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -3982,7 +3982,7 @@ export type DeputyCreateWithoutRelIniciativasInput = {
   relContasPublicas?: Prisma.RelContasPublicasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -4019,7 +4019,7 @@ export type DeputyUncheckedCreateWithoutRelIniciativasInput = {
   relContasPublicas?: Prisma.RelContasPublicasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -4071,7 +4071,7 @@ export type DeputyUpdateWithoutRelIniciativasInput = {
   relContasPublicas?: Prisma.RelContasPublicasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -4108,7 +4108,7 @@ export type DeputyUncheckedUpdateWithoutRelIniciativasInput = {
   relContasPublicas?: Prisma.RelContasPublicasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -4144,7 +4144,7 @@ export type DeputyCreateWithoutRelIniEuropeiasInput = {
   relContasPublicas?: Prisma.RelContasPublicasCreateNestedManyWithoutDeputyInput
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -4181,7 +4181,7 @@ export type DeputyUncheckedCreateWithoutRelIniEuropeiasInput = {
   relContasPublicas?: Prisma.RelContasPublicasUncheckedCreateNestedManyWithoutDeputyInput
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -4233,7 +4233,7 @@ export type DeputyUpdateWithoutRelIniEuropeiasInput = {
   relContasPublicas?: Prisma.RelContasPublicasUpdateManyWithoutDeputyNestedInput
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -4270,7 +4270,7 @@ export type DeputyUncheckedUpdateWithoutRelIniEuropeiasInput = {
   relContasPublicas?: Prisma.RelContasPublicasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
@@ -4306,7 +4306,7 @@ export type DeputyCreateWithoutRelPeticoesInput = {
   relContasPublicas?: Prisma.RelContasPublicasCreateNestedManyWithoutDeputyInput
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
@@ -4343,7 +4343,7 @@ export type DeputyUncheckedCreateWithoutRelPeticoesInput = {
   relContasPublicas?: Prisma.RelContasPublicasUncheckedCreateNestedManyWithoutDeputyInput
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
@@ -4395,7 +4395,7 @@ export type DeputyUpdateWithoutRelPeticoesInput = {
   relContasPublicas?: Prisma.RelContasPublicasUpdateManyWithoutDeputyNestedInput
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
@@ -4432,11 +4432,11 @@ export type DeputyUncheckedUpdateWithoutRelPeticoesInput = {
   relContasPublicas?: Prisma.RelContasPublicasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
   factChecks?: Prisma.FactCheckUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
-export type DeputyCreateWithoutArticlesInput = {
+export type DeputyCreateWithoutArticleMpMatchesInput = {
   depId: number
   depCadId?: number | null
   depNomeParlamentar: string
@@ -4472,7 +4472,7 @@ export type DeputyCreateWithoutArticlesInput = {
   factChecks?: Prisma.FactCheckCreateNestedManyWithoutDeputyInput
 }
 
-export type DeputyUncheckedCreateWithoutArticlesInput = {
+export type DeputyUncheckedCreateWithoutArticleMpMatchesInput = {
   id?: number
   depId: number
   depCadId?: number | null
@@ -4509,23 +4509,23 @@ export type DeputyUncheckedCreateWithoutArticlesInput = {
   factChecks?: Prisma.FactCheckUncheckedCreateNestedManyWithoutDeputyInput
 }
 
-export type DeputyCreateOrConnectWithoutArticlesInput = {
+export type DeputyCreateOrConnectWithoutArticleMpMatchesInput = {
   where: Prisma.DeputyWhereUniqueInput
-  create: Prisma.XOR<Prisma.DeputyCreateWithoutArticlesInput, Prisma.DeputyUncheckedCreateWithoutArticlesInput>
+  create: Prisma.XOR<Prisma.DeputyCreateWithoutArticleMpMatchesInput, Prisma.DeputyUncheckedCreateWithoutArticleMpMatchesInput>
 }
 
-export type DeputyUpsertWithoutArticlesInput = {
-  update: Prisma.XOR<Prisma.DeputyUpdateWithoutArticlesInput, Prisma.DeputyUncheckedUpdateWithoutArticlesInput>
-  create: Prisma.XOR<Prisma.DeputyCreateWithoutArticlesInput, Prisma.DeputyUncheckedCreateWithoutArticlesInput>
+export type DeputyUpsertWithoutArticleMpMatchesInput = {
+  update: Prisma.XOR<Prisma.DeputyUpdateWithoutArticleMpMatchesInput, Prisma.DeputyUncheckedUpdateWithoutArticleMpMatchesInput>
+  create: Prisma.XOR<Prisma.DeputyCreateWithoutArticleMpMatchesInput, Prisma.DeputyUncheckedCreateWithoutArticleMpMatchesInput>
   where?: Prisma.DeputyWhereInput
 }
 
-export type DeputyUpdateToOneWithWhereWithoutArticlesInput = {
+export type DeputyUpdateToOneWithWhereWithoutArticleMpMatchesInput = {
   where?: Prisma.DeputyWhereInput
-  data: Prisma.XOR<Prisma.DeputyUpdateWithoutArticlesInput, Prisma.DeputyUncheckedUpdateWithoutArticlesInput>
+  data: Prisma.XOR<Prisma.DeputyUpdateWithoutArticleMpMatchesInput, Prisma.DeputyUncheckedUpdateWithoutArticleMpMatchesInput>
 }
 
-export type DeputyUpdateWithoutArticlesInput = {
+export type DeputyUpdateWithoutArticleMpMatchesInput = {
   depId?: Prisma.IntFieldUpdateOperationsInput | number
   depCadId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   depNomeParlamentar?: Prisma.StringFieldUpdateOperationsInput | string
@@ -4561,7 +4561,7 @@ export type DeputyUpdateWithoutArticlesInput = {
   factChecks?: Prisma.FactCheckUpdateManyWithoutDeputyNestedInput
 }
 
-export type DeputyUncheckedUpdateWithoutArticlesInput = {
+export type DeputyUncheckedUpdateWithoutArticleMpMatchesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   depId?: Prisma.IntFieldUpdateOperationsInput | number
   depCadId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -4631,7 +4631,7 @@ export type DeputyCreateWithoutFactChecksInput = {
   relIniciativas?: Prisma.RelIniciativasCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchCreateNestedManyWithoutDeputyInput
 }
 
 export type DeputyUncheckedCreateWithoutFactChecksInput = {
@@ -4668,7 +4668,7 @@ export type DeputyUncheckedCreateWithoutFactChecksInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedCreateNestedManyWithoutDeputyInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedCreateNestedManyWithoutDeputyInput
   relPeticoes?: Prisma.RelPeticoesUncheckedCreateNestedManyWithoutDeputyInput
-  articles?: Prisma.ArticleUncheckedCreateNestedManyWithoutDeputyInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedCreateNestedManyWithoutDeputyInput
 }
 
 export type DeputyCreateOrConnectWithoutFactChecksInput = {
@@ -4720,7 +4720,7 @@ export type DeputyUpdateWithoutFactChecksInput = {
   relIniciativas?: Prisma.RelIniciativasUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUpdateManyWithoutDeputyNestedInput
 }
 
 export type DeputyUncheckedUpdateWithoutFactChecksInput = {
@@ -4757,7 +4757,7 @@ export type DeputyUncheckedUpdateWithoutFactChecksInput = {
   relIniciativas?: Prisma.RelIniciativasUncheckedUpdateManyWithoutDeputyNestedInput
   relIniEuropeias?: Prisma.RelIniEuropeiasUncheckedUpdateManyWithoutDeputyNestedInput
   relPeticoes?: Prisma.RelPeticoesUncheckedUpdateManyWithoutDeputyNestedInput
-  articles?: Prisma.ArticleUncheckedUpdateManyWithoutDeputyNestedInput
+  articleMpMatches?: Prisma.ArticleMpMatchUncheckedUpdateManyWithoutDeputyNestedInput
 }
 
 
@@ -4787,7 +4787,7 @@ export type DeputyCountOutputType = {
   relIniciativas: number
   relIniEuropeias: number
   relPeticoes: number
-  articles: number
+  articleMpMatches: number
   factChecks: number
 }
 
@@ -4813,7 +4813,7 @@ export type DeputyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   relIniciativas?: boolean | DeputyCountOutputTypeCountRelIniciativasArgs
   relIniEuropeias?: boolean | DeputyCountOutputTypeCountRelIniEuropeiasArgs
   relPeticoes?: boolean | DeputyCountOutputTypeCountRelPeticoesArgs
-  articles?: boolean | DeputyCountOutputTypeCountArticlesArgs
+  articleMpMatches?: boolean | DeputyCountOutputTypeCountArticleMpMatchesArgs
   factChecks?: boolean | DeputyCountOutputTypeCountFactChecksArgs
 }
 
@@ -4977,8 +4977,8 @@ export type DeputyCountOutputTypeCountRelPeticoesArgs<ExtArgs extends runtime.Ty
 /**
  * DeputyCountOutputType without action
  */
-export type DeputyCountOutputTypeCountArticlesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ArticleWhereInput
+export type DeputyCountOutputTypeCountArticleMpMatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ArticleMpMatchWhereInput
 }
 
 /**
@@ -5023,7 +5023,7 @@ export type DeputySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   relIniciativas?: boolean | Prisma.Deputy$relIniciativasArgs<ExtArgs>
   relIniEuropeias?: boolean | Prisma.Deputy$relIniEuropeiasArgs<ExtArgs>
   relPeticoes?: boolean | Prisma.Deputy$relPeticoesArgs<ExtArgs>
-  articles?: boolean | Prisma.Deputy$articlesArgs<ExtArgs>
+  articleMpMatches?: boolean | Prisma.Deputy$articleMpMatchesArgs<ExtArgs>
   factChecks?: boolean | Prisma.Deputy$factChecksArgs<ExtArgs>
   _count?: boolean | Prisma.DeputyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["deputy"]>
@@ -5096,7 +5096,7 @@ export type DeputyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   relIniciativas?: boolean | Prisma.Deputy$relIniciativasArgs<ExtArgs>
   relIniEuropeias?: boolean | Prisma.Deputy$relIniEuropeiasArgs<ExtArgs>
   relPeticoes?: boolean | Prisma.Deputy$relPeticoesArgs<ExtArgs>
-  articles?: boolean | Prisma.Deputy$articlesArgs<ExtArgs>
+  articleMpMatches?: boolean | Prisma.Deputy$articleMpMatchesArgs<ExtArgs>
   factChecks?: boolean | Prisma.Deputy$factChecksArgs<ExtArgs>
   _count?: boolean | Prisma.DeputyCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -5127,7 +5127,7 @@ export type $DeputyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     relIniciativas: Prisma.$RelIniciativasPayload<ExtArgs>[]
     relIniEuropeias: Prisma.$RelIniEuropeiasPayload<ExtArgs>[]
     relPeticoes: Prisma.$RelPeticoesPayload<ExtArgs>[]
-    articles: Prisma.$ArticlePayload<ExtArgs>[]
+    articleMpMatches: Prisma.$ArticleMpMatchPayload<ExtArgs>[]
     factChecks: Prisma.$FactCheckPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -5558,7 +5558,7 @@ export interface Prisma__DeputyClient<T, Null = never, ExtArgs extends runtime.T
   relIniciativas<T extends Prisma.Deputy$relIniciativasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Deputy$relIniciativasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RelIniciativasPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   relIniEuropeias<T extends Prisma.Deputy$relIniEuropeiasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Deputy$relIniEuropeiasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RelIniEuropeiasPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   relPeticoes<T extends Prisma.Deputy$relPeticoesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Deputy$relPeticoesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RelPeticoesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  articles<T extends Prisma.Deputy$articlesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Deputy$articlesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  articleMpMatches<T extends Prisma.Deputy$articleMpMatchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Deputy$articleMpMatchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArticleMpMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   factChecks<T extends Prisma.Deputy$factChecksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Deputy$factChecksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FactCheckPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6498,27 +6498,27 @@ export type Deputy$relPeticoesArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * Deputy.articles
+ * Deputy.articleMpMatches
  */
-export type Deputy$articlesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Deputy$articleMpMatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Article
+   * Select specific fields to fetch from the ArticleMpMatch
    */
-  select?: Prisma.ArticleSelect<ExtArgs> | null
+  select?: Prisma.ArticleMpMatchSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Article
+   * Omit specific fields from the ArticleMpMatch
    */
-  omit?: Prisma.ArticleOmit<ExtArgs> | null
+  omit?: Prisma.ArticleMpMatchOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ArticleInclude<ExtArgs> | null
-  where?: Prisma.ArticleWhereInput
-  orderBy?: Prisma.ArticleOrderByWithRelationInput | Prisma.ArticleOrderByWithRelationInput[]
-  cursor?: Prisma.ArticleWhereUniqueInput
+  include?: Prisma.ArticleMpMatchInclude<ExtArgs> | null
+  where?: Prisma.ArticleMpMatchWhereInput
+  orderBy?: Prisma.ArticleMpMatchOrderByWithRelationInput | Prisma.ArticleMpMatchOrderByWithRelationInput[]
+  cursor?: Prisma.ArticleMpMatchWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ArticleScalarFieldEnum | Prisma.ArticleScalarFieldEnum[]
+  distinct?: Prisma.ArticleMpMatchScalarFieldEnum | Prisma.ArticleMpMatchScalarFieldEnum[]
 }
 
 /**

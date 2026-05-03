@@ -9,6 +9,16 @@ const nextConfig: NextConfig = {
         hostname: "upload.wikimedia.org",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.impresa.pt",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "imagens.publico.pt",
+        pathname: "/**",
+      },
     ],
   },
 };
