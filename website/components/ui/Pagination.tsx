@@ -72,11 +72,11 @@ export default function Pagination({
         <span className="material-symbols-outlined">chevron_left</span>
       </button>
 
-      {visiblePages.map((page) => {
+      {visiblePages.map((page, index) => {
         if (page === "...") {
           return (
             <span
-              key={`ellipsis-${page === visiblePages[1] ? "left" : "right"}`}
+              key={`ellipsis-${index}`}
               className="w-10 h-10 flex items-center justify-center font-body text-on-surface-variant"
             >
               ...
