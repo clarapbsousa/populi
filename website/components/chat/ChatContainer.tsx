@@ -42,6 +42,7 @@ export default function ChatContainer() {
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [initialMessagesLoaded, setInitialMessagesLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const transport = useRef(
     new DefaultChatTransport({ api: "/api/chat" }),
@@ -139,7 +140,10 @@ export default function ChatContainer() {
                 <button
                   key={example}
                   type="button"
-                  onClick={() => setInput(example)}
+                  onClick={() => {
+                    setInput(example);
+                    inputRef.current?.focus();
+                  }}
                   className="border-2 border-stone-900 bg-surface px-3 py-1.5 font-label text-[10px] uppercase tracking-wider hover:bg-primary-container hover:text-on-primary transition-colors"
                 >
                   {example}
@@ -184,6 +188,7 @@ export default function ChatContainer() {
       {/* Input */}
       <div className="border-t-2 border-stone-900 p-3 bg-surface-container">
         <ChatInput
+          ref={inputRef}
           input={input}
           onChange={setInput}
           onSubmit={handleSubmit}
