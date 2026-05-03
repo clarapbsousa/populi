@@ -28,46 +28,46 @@ export default function ContactPage() {
   return (
     <div className="bg-surface font-body text-on-surface antialiased azulejo-crazing min-h-screen">
       <Header />
-      <main className="max-w-[1200px] mx-auto p-6 md:p-10 space-y-10">
+      <main className="max-w-[1200px] mx-auto p-4 sm:p-6 md:p-10 space-y-10">
         <section className="bg-surface-container border-4 border-stone-900 glossy-finish relative overflow-hidden">
           <div className="absolute inset-0 pattern-frame opacity-20 pointer-events-none" />
-          <div className="relative z-10 p-8 md:p-12">
+          <div className="relative z-10 p-6 sm:p-8 md:p-12">
             <span className="font-label text-primary tracking-[0.2em] mb-4 block text-xs font-medium uppercase">
               Vamos conversar
             </span>
-            <h1 className="font-headline text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="font-headline text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
               Contacto
             </h1>
-            <p className="text-on-surface-variant text-lg max-w-3xl leading-relaxed">
+            <p className="text-on-surface-variant text-base sm:text-lg max-w-3xl leading-relaxed">
               A Populi cresce com contributos da comunidade. Use os canais
               abaixo para partilhar perguntas, correções ou sugestões.
             </p>
           </div>
         </section>
 
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {contactOptions.map((option) => (
             <article
               key={option.title}
-              className="bg-white border-4 border-stone-900 glossy-finish p-6 md:p-8"
+              className="bg-white border-4 border-stone-900 glossy-finish p-4 sm:p-6 md:p-8"
             >
-              <h2 className="font-headline text-2xl font-bold mb-3">
+              <h2 className="font-headline text-xl sm:text-2xl font-bold mb-3">
                 {option.title}
               </h2>
-              <p className="text-on-surface-variant leading-relaxed">
+              <p className="text-on-surface-variant text-sm sm:text-base leading-relaxed">
                 {option.description}
               </p>
             </article>
           ))}
         </section>
 
-        <section className="bg-primary-container border-4 border-stone-900 glossy-finish p-6 md:p-8 text-white">
-          <div className="flex flex-col lg:flex-row gap-8">
+        <section className="bg-primary-container border-4 border-stone-900 glossy-finish p-4 sm:p-6 md:p-8 text-white">
+          <div className="flex flex-col lg:flex-row gap-6 sm:gap-8">
             <div className="flex-1">
-              <h2 className="font-headline text-2xl font-bold mb-3">
+              <h2 className="font-headline text-xl sm:text-2xl font-bold mb-3">
                 Envie-nos uma mensagem
               </h2>
-              <p className="leading-relaxed opacity-90 mb-6">
+              <p className="leading-relaxed opacity-90 mb-6 text-sm sm:text-base">
                 Preencha os campos e clique em enviar para abrir o seu email com
                 a mensagem pré-preenchida.
               </p>
@@ -82,7 +82,7 @@ export default function ContactPage() {
                   <input
                     name="subject"
                     required
-                    className="bg-white text-stone-900 border-2 border-stone-900 px-4 py-3 glossy-finish focus:outline-none focus:ring-2 focus:ring-white/70"
+                    className="bg-white text-stone-900 border-2 border-stone-900 px-3 sm:px-4 py-2 sm:py-3 glossy-finish focus:outline-none focus:ring-2 focus:ring-white/70 w-full"
                     placeholder="Ex: Sugestão de melhoria"
                   />
                 </label>
@@ -92,7 +92,7 @@ export default function ContactPage() {
                     type="email"
                     name="from"
                     required
-                    className="bg-white text-stone-900 border-2 border-stone-900 px-4 py-3 glossy-finish focus:outline-none focus:ring-2 focus:ring-white/70"
+                    className="bg-white text-stone-900 border-2 border-stone-900 px-3 sm:px-4 py-2 sm:py-3 glossy-finish focus:outline-none focus:ring-2 focus:ring-white/70 w-full"
                     placeholder="nome@exemplo.com"
                   />
                 </label>
@@ -102,13 +102,13 @@ export default function ContactPage() {
                     name="message"
                     required
                     rows={5}
-                    className="bg-white text-stone-900 border-2 border-stone-900 px-4 py-3 glossy-finish focus:outline-none focus:ring-2 focus:ring-white/70"
+                    className="bg-white text-stone-900 border-2 border-stone-900 px-3 sm:px-4 py-2 sm:py-3 glossy-finish focus:outline-none focus:ring-2 focus:ring-white/70 w-full"
                     placeholder="Descreva a sua mensagem"
                   />
                 </label>
                 <button
                   type="submit"
-                  className="bg-white text-primary font-headline font-bold px-6 py-3 border-2 border-stone-900 glossy-finish active:translate-y-[2px]"
+                  className="bg-white text-primary font-headline font-bold px-6 py-3 border-2 border-stone-900 glossy-finish active:translate-y-[2px] w-full sm:w-auto"
                 >
                   Enviar email
                 </button>
