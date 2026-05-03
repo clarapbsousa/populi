@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import type { UIMessage } from "ai";
 import { DefaultChatTransport } from "ai";
 import { Trash2 } from "lucide-react";
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
@@ -103,7 +104,7 @@ export default function ChatContainer() {
       <div className="flex items-center justify-between border-b-2 border-stone-900 p-3 bg-surface-container">
         <div>
           <h2 className="font-headline text-lg font-bold text-primary flex items-center gap-2">
-            <img src="/eye.svg" alt="Eye" className="w-5 h-5" />
+            <Image src="/eye.svg" alt="Eye" width={20} height={20} />
             Assistente Populi
           </h2>
           <p className="font-label text-[10px] uppercase tracking-wider text-on-surface-variant">
