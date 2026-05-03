@@ -13,8 +13,8 @@ interface GitHubUser {
 }
 
 const teamMembers = [
-  { username: "clarapbsousa", displayName: "Clara Sousa" },
   { username: "Process-ing", displayName: "Bruno Oliveira" },
+  { username: "clarapbsousa", displayName: "Clara Sousa" },
   { username: "HenriqueSFernandes", displayName: "Henrique Fernandes" },
   { username: "jose-carlos-sousa", displayName: "José Sousa" },
 ];
@@ -55,9 +55,16 @@ export default async function TeamPage() {
             <h1 className="font-headline text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
               Equipa
             </h1>
+            <p className="text-on-surface-variant text-base sm:text-lg max-w-3xl leading-relaxed mb-4">
+              A Populi é uma plataforma dedicada à transparência política em
+              Portugal. O nosso objetivo é informar os cidadãos e ajudá-los a
+              tomar decisões informadas sobre em quem votam e quem os
+              representa.
+            </p>
             <p className="text-on-surface-variant text-base sm:text-lg max-w-3xl leading-relaxed">
-              A Populi é construída por uma equipa de developers apaixonados por
-              transparência política e dados abertos.
+              Acreditamos que o acesso a dados políticos claros e verificáveis é
+              essencial para uma democracia saudável. Cada decisão, cada voto e
+              cada voz importa.
             </p>
           </div>
         </section>
@@ -94,12 +101,12 @@ export default async function TeamPage() {
               </p>
 
               {user.github?.bio && (
-                <p className="text-on-surface-variant text-sm leading-relaxed mb-4 flex-grow">
+                <p className="text-on-surface-variant text-sm leading-relaxed mb-4">
                   {user.github.bio}
                 </p>
               )}
 
-              <div className="flex flex-wrap justify-center gap-2 mt-auto">
+              <div className="flex flex-wrap justify-center gap-2">
                 <a
                   href={
                     user.github?.html_url ||

@@ -9,9 +9,9 @@ export default function Footer() {
         </p>
       </div>
       <nav className="flex flex-wrap justify-center gap-4 md:gap-8">
-        <FooterLink href="/team">Equipa</FooterLink>
         <FooterLink href="/privacy">Termos de Privacidade</FooterLink>
         <FooterLink href="/faq">FAQ</FooterLink>
+        <FooterLink href="/team">Equipa</FooterLink>
         <FooterLink href="/contact">Contacto</FooterLink>
       </nav>
     </footer>
